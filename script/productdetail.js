@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             category: "Fashion",
             price: 25000,
             rating: 4.8,
-            image: "../images/products/dress.jpg",
+            image: "../images/products/africa.jpg",
             seller: "Grace Fashion Store",
             location: "Bamenda",
             description: "Beautiful African print dress made from high-quality fabric. Perfect for casual occasions, parties and special events."

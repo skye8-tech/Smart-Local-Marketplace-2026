@@ -1,3 +1,5 @@
+"use strict";
+
 const categoryItems = {
 
     fashion: {
@@ -258,6 +260,7 @@ const categoryItems = {
 
 };
 
+
 const categoryCards =
     document.querySelectorAll(".category-card");
 
@@ -273,9 +276,10 @@ const subcategoryDescription =
 const subcategoryList =
     document.getElementById("subcategory-list");
 
-categoryCards.forEach(function(card) {
 
-    card.addEventListener("click", function() {
+categoryCards.forEach(function (card) {
+
+    card.addEventListener("click", function () {
 
         const category =
             card.dataset.category;
@@ -286,6 +290,7 @@ categoryCards.forEach(function(card) {
 
 });
 
+
 function showSubcategories(category) {
 
     const selectedCategory =
@@ -295,6 +300,7 @@ function showSubcategories(category) {
         return;
     }
 
+
     subcategoryTitle.textContent =
         selectedCategory.title;
 
@@ -303,7 +309,8 @@ function showSubcategories(category) {
 
     subcategoryList.innerHTML = "";
 
-    selectedCategory.items.forEach(function(item) {
+
+    selectedCategory.items.forEach(function (item) {
 
         const subcategoryCard =
             document.createElement("a");
@@ -311,11 +318,17 @@ function showSubcategories(category) {
         subcategoryCard.className =
             "subcategory-card";
 
+
+        /*
+         * Send the buyer to product.html
+         * with both category and subcategory.
+         */
         subcategoryCard.href =
-            "products.html?category=" +
+            "product.html?category=" +
             encodeURIComponent(category) +
             "&subcategory=" +
             encodeURIComponent(item.name);
+
 
         subcategoryCard.innerHTML = `
 
@@ -336,11 +349,13 @@ function showSubcategories(category) {
 
         `;
 
+
         subcategoryList.appendChild(
             subcategoryCard
         );
 
     });
+
 
     subcategorySection.scrollIntoView({
         behavior: "smooth",

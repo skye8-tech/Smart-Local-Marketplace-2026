@@ -217,7 +217,7 @@
     z-index: 2;
     padding: 6px 10px;
     background: #2563eb;
-    color: white;
+    color: var(--text-color);
     border-radius: 5px;
     font-size: 12px;
     font-weight: bold;
@@ -359,8 +359,9 @@
 }
 
 .pagination button:disabled {
-    background: #f3f4f6;
-    color: #9ca3af;
+    background:var(primary-color);
+    color: var(text-color
+    );
     cursor: not-allowed;
     border-color: #e5e7eb;
 }
