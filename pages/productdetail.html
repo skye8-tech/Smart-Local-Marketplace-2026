@@ -1,27 +1,31 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    ```
     <title>Product Details | Smart Local Marketplace</title>
 
     <link rel="stylesheet" href="../style/style.css" />
     <link rel="stylesheet" href="../style/productdetail.css" />
+    ```
   </head>
 
   <body>
     <div id="header"></div>
 
+    ```
     <main>
       <section class="product-detail-page">
         <div class="container">
           <div class="breadcrumb">
-            <a href="../index.html"> Home </a>
+            <a href="../index.html">Home</a>
 
             <span>›</span>
 
-            <a href="product.html"> Products </a>
+            <a href="product.html">Products</a>
 
             <span>›</span>
 
@@ -41,7 +45,7 @@
               <h1 id="product-name">Product Name</h1>
 
               <div class="detail-rating">
-                <span id="product-rating"> </span>
+                <span id="product-rating"></span>
 
                 <strong id="rating-number"> 0 </strong>
               </div>
@@ -119,6 +123,44 @@
             </p>
           </section>
 
+          <section class="customer-reviews">
+            <h2>Customer Reviews</h2>
+
+            <div id="reviews-list">
+              <p>No reviews yet.</p>
+            </div>
+
+            <div class="review-form">
+              <h3>Write a Review</h3>
+
+              <input type="text" id="review-customer" placeholder="Your name" />
+
+              <select id="review-rating">
+                <option value="">Select Rating</option>
+
+                <option value="5">5/5</option>
+
+                <option value="4">4/5</option>
+
+                <option value="3">3/5</option>
+
+                <option value="2">2/5</option>
+
+                <option value="1">1/5</option>
+              </select>
+
+              <textarea
+                id="review-text"
+                placeholder="Write your review..."
+                rows="5"
+              ></textarea>
+
+              <button type="button" id="submit-review">Submit Review</button>
+
+              <p id="review-message"></p>
+            </div>
+          </section>
+
           <section class="related-products">
             <div class="section-header">
               <h2>You May Also Like</h2>
@@ -156,21 +198,17 @@
 
                 <p>FCFA 35,000</p>
               </a>
+
               <a href="productdetail.html?id=men001" class="related-card">
-                <img
-                  src="../images/products/shoe.jpg"
-                  alt="Bluetooth Speaker"
-                />
+                <img src="../images/products/shoe.jpg" alt="Men Fashion" />
 
                 <h3>Men Fashion</h3>
 
                 <p>FCFA 35,000</p>
               </a>
+
               <a href="productdetail.html?id=shoe001" class="related-card">
-                <img
-                  src="../images/products/poultry.jpg"
-                  alt="Bluetooth Speaker"
-                />
+                <img src="../images/products/poultry.jpg" alt="Chicken" />
 
                 <h3>Chicken</h3>
 
@@ -186,5 +224,6 @@
 
     <script src="../script/productdetail.js"></script>
     <script src="../script/layout.js"></script>
+    ```
   </body>
 </html>

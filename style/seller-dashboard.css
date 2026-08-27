@@ -17,6 +17,20 @@
     font-size: 22px;
 }
 
+
+.seller-product-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.seller-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 .logout-btn {
     border: none;
     background: #dc3545;

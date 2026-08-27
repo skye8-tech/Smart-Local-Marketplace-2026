@@ -14,7 +14,6 @@ function getSellers() {
 
   try {
     var sellers = JSON.parse(data);
-
     return Array.isArray(sellers) ? sellers : [];
   } catch (error) {
     return [];
@@ -81,7 +80,6 @@ function loadSellerInformation() {
   }
 
   updateProductCount();
-
   renderProducts();
 }
 
@@ -125,20 +123,18 @@ function renderProducts() {
 
     productCard.className = "seller-product-card";
 
+    var image = product.image || "../images/products/product.jpg";
+
     productCard.innerHTML = `
 
             <div class="seller-product-image">
 
                 <img
-                    src="${escapeHTML(
-                      product.image || "../images/products/product.jpg",
-                    )}"
+                    src="${image}"
                     alt="${escapeHTML(product.name)}"
-                    onerror="this.src='../images/products/product.jpg'"
                 >
 
             </div>
-
 
             <div class="seller-product-content">
 
@@ -147,24 +143,24 @@ function renderProducts() {
                 </h3>
 
                 <p>
-                    ${escapeHTML(product.category)}
+                    Category: ${escapeHTML(product.category)}
                 </p>
 
                 <strong>
                     ${Number(product.price).toLocaleString()} FCFA
                 </strong>
 
-                <span>
+                <p>
                     Stock: ${product.stock}
-                </span>
+                </p>
 
                 <p>
                     ${escapeHTML(product.description)}
                 </p>
 
-                <span>
+                <p>
                     Status: ${escapeHTML(product.status)}
-                </span>
+                </p>
 
             </div>
 
@@ -228,8 +224,6 @@ if (productForm) {
 
     var stock = stockInput.value;
 
-    var image = imageInput.value.trim();
-
     var description = descriptionInput.value.trim();
 
     if (
@@ -250,71 +244,101 @@ if (productForm) {
       return;
     }
 
-    var product = {
-      id: "product-" + Date.now(),
+    var imageFile = imageInput.files[0];
 
-      name: productName,
-
-      category: category,
-
-      price: Number(price),
-
-      stock: Number(stock),
-
-      image: image,
-
-      description: description,
-
-      sellerId: currentSeller.id,
-
-      sellerName: currentSeller.sellerName,
-
-      businessName: currentSeller.businessName,
-
-      location: currentSeller.location,
-
-      status: "Pending",
-
-      createdAt: new Date().toISOString(),
-    };
-
-    if (!Array.isArray(currentSeller.products)) {
-      currentSeller.products = [];
-    }
-
-    currentSeller.products.push(product);
-
-    var sellers = getSellers();
-
-    var sellerIndex = sellers.findIndex(function (seller) {
-      return seller.id === currentSeller.id;
-    });
-
-    if (sellerIndex === -1) {
-      alert("Seller account could not be found.");
+    if (!imageFile) {
+      alert("Please select a product image.");
 
       return;
     }
 
-    sellers[sellerIndex] = currentSeller;
+    if (!imageFile.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
 
-    saveSellers(sellers);
-
-    currentSeller = sellers[sellerIndex];
-
-    productForm.reset();
-
-    if (addProductSection) {
-      addProductSection.style.display = "none";
+      return;
     }
 
-    showAddProductButton.style.display = "inline-block";
+    var reader = new FileReader();
 
-    updateProductCount();
+    reader.onload = function () {
+      var product = {
+        id: "product-" + Date.now(),
 
-    renderProducts();
+        name: productName,
 
-    alert("Product added successfully. It is now waiting for admin approval.");
+        category: category,
+
+        price: Number(price),
+
+        stock: Number(stock),
+
+        image: reader.result,
+
+        description: description,
+
+        sellerId: currentSeller.id,
+
+        sellerName: currentSeller.sellerName,
+
+        businessName: currentSeller.businessName,
+
+        location: currentSeller.location,
+
+        status: "Pending",
+
+        rating: 0,
+
+        createdAt: new Date().toISOString(),
+      };
+
+      if (!Array.isArray(currentSeller.products)) {
+        currentSeller.products = [];
+      }
+
+      currentSeller.products.push(product);
+
+      var sellers = getSellers();
+
+      var sellerIndex = sellers.findIndex(function (seller) {
+        return seller.id === currentSeller.id;
+      });
+
+      if (sellerIndex === -1) {
+        alert("Seller account could not be found.");
+
+        return;
+      }
+
+      sellers[sellerIndex] = currentSeller;
+
+      saveSellers(sellers);
+
+      currentSeller = sellers[sellerIndex];
+
+      productForm.reset();
+
+      if (addProductSection) {
+        addProductSection.style.display = "none";
+      }
+
+      if (showAddProductButton) {
+        showAddProductButton.style.display = "inline-block";
+      }
+
+      updateProductCount();
+
+      renderProducts();
+
+      alert(
+        "Product added successfully. It is now waiting for admin approval.",
+      );
+    };
+
+    reader.onerror = function () {
+      alert("There was a problem reading the image.");
+    };
+
+    reader.readAsDataURL(imageFile);
   });
 }
 

@@ -3,35 +3,50 @@
 var productCards = Array.from(document.querySelectorAll(".product-card"));
 
 var searchInput = document.getElementById("search-input");
+
 var searchButton = document.getElementById("search-button");
+
 var locationFilter = document.getElementById("location-filter");
+
 var sortProducts = document.getElementById("sort-products");
 
 var categoryButtons = document.querySelectorAll(".category-filter");
 
 var productCount = document.getElementById("product-count");
+
 var noProducts = document.getElementById("no-products");
 
 var previousPage = document.getElementById("previous-page");
+
 var nextPage = document.getElementById("next-page");
+
 var pageButtons = document.querySelectorAll(".page-btn");
 
 var currentPage = 1;
+
 var productsPerPage = 3;
 
 var currentCategory = "all";
+
 var currentLocation = "all";
+
 var currentSearch = "";
+
 var currentSort = "default";
 
 function getFilteredProducts() {
   var filteredProducts = productCards.filter(function (product) {
-    var category = product.dataset.category;
-    var location = product.dataset.location;
+    var category = product.dataset.category || "";
+
+    var location = product.dataset.location || "";
 
     var productName = product.querySelector("h2").textContent.toLowerCase();
 
-    var sellerName = product.querySelector("p").textContent.toLowerCase();
+    var sellerElement = product.querySelector("p");
+
+    var sellerName = sellerElement
+      ? sellerElement.textContent.toLowerCase()
+      : "";
 
     var matchesCategory =
       currentCategory === "all" || category === currentCategory;
@@ -52,11 +67,15 @@ function getFilteredProducts() {
     filteredProducts.sort(function (a, b) {
       return Number(a.dataset.price) - Number(b.dataset.price);
     });
-  } else if (currentSort === "high") {
+  }
+
+  if (currentSort === "high") {
     filteredProducts.sort(function (a, b) {
       return Number(b.dataset.price) - Number(a.dataset.price);
     });
-  } else if (currentSort === "rating") {
+  }
+
+  if (currentSort === "rating") {
     filteredProducts.sort(function (a, b) {
       return Number(b.dataset.rating) - Number(a.dataset.rating);
     });
@@ -133,9 +152,13 @@ function updatePagination(totalPages) {
     }
   });
 
-  previousPage.disabled = currentPage <= 1;
+  if (previousPage) {
+    previousPage.disabled = currentPage <= 1;
+  }
 
-  nextPage.disabled = totalPages === 0 || currentPage >= totalPages;
+  if (nextPage) {
+    nextPage.disabled = totalPages === 0 || currentPage >= totalPages;
+  }
 }
 
 categoryButtons.forEach(function (button) {
@@ -154,15 +177,21 @@ categoryButtons.forEach(function (button) {
   });
 });
 
-locationFilter.addEventListener("change", function () {
-  currentLocation = locationFilter.value;
+if (locationFilter) {
+  locationFilter.addEventListener("change", function () {
+    currentLocation = locationFilter.value;
 
-  currentPage = 1;
+    currentPage = 1;
 
-  renderProducts();
-});
+    renderProducts();
+  });
+}
 
 function performSearch() {
+  if (!searchInput) {
+    return;
+  }
+
   currentSearch = searchInput.value.trim().toLowerCase();
 
   currentPage = 1;
@@ -170,21 +199,27 @@ function performSearch() {
   renderProducts();
 }
 
-searchButton.addEventListener("click", performSearch);
+if (searchButton) {
+  searchButton.addEventListener("click", performSearch);
+}
 
-searchInput.addEventListener("keyup", function (event) {
-  if (event.key === "Enter") {
-    performSearch();
-  }
-});
+if (searchInput) {
+  searchInput.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      performSearch();
+    }
+  });
+}
 
-sortProducts.addEventListener("change", function () {
-  currentSort = sortProducts.value;
+if (sortProducts) {
+  sortProducts.addEventListener("change", function () {
+    currentSort = sortProducts.value;
 
-  currentPage = 1;
+    currentPage = 1;
 
-  renderProducts();
-});
+    renderProducts();
+  });
+}
 
 pageButtons.forEach(function (button) {
   button.addEventListener("click", function () {
@@ -199,35 +234,39 @@ pageButtons.forEach(function (button) {
   });
 });
 
-previousPage.addEventListener("click", function () {
-  if (currentPage > 1) {
-    currentPage--;
+if (previousPage) {
+  previousPage.addEventListener("click", function () {
+    if (currentPage > 1) {
+      currentPage--;
 
-    renderProducts();
+      renderProducts();
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-});
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  });
+}
 
-nextPage.addEventListener("click", function () {
-  var filteredProducts = getFilteredProducts();
+if (nextPage) {
+  nextPage.addEventListener("click", function () {
+    var filteredProducts = getFilteredProducts();
 
-  var totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    var totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  if (currentPage < totalPages) {
-    currentPage++;
+    if (currentPage < totalPages) {
+      currentPage++;
 
-    renderProducts();
+      renderProducts();
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }
-});
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  });
+}
 
 var addCartButtons = document.querySelectorAll(".add-cart");
 
@@ -241,7 +280,9 @@ addCartButtons.forEach(function (button) {
 
     var price = Number(button.dataset.price);
 
-    var image = productCard.querySelector("img").getAttribute("src");
+    var imageElement = productCard.querySelector("img");
+
+    var image = imageElement ? imageElement.getAttribute("src") : "";
 
     var location = productCard.dataset.location;
 
@@ -256,10 +297,15 @@ addCartButtons.forEach(function (button) {
     } else {
       cart.push({
         id: id,
+
         name: name,
+
         price: price,
+
         image: image,
+
         location: location,
+
         quantity: 1,
       });
     }
@@ -271,7 +317,55 @@ addCartButtons.forEach(function (button) {
     setTimeout(function () {
       button.textContent = "Add to Cart";
     }, 1500);
+
+    updateCartCount();
   });
 });
 
+function updateCartCount() {
+  var cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  var totalItems = 0;
+
+  cart.forEach(function (item) {
+    totalItems += Number(item.quantity) || 0;
+  });
+
+  var cartCount = document.querySelector(".cart-count");
+
+  if (cartCount) {
+    cartCount.textContent = totalItems;
+  }
+}
+
+function loadSearchFromNavbar() {
+  var urlParams = new URLSearchParams(window.location.search);
+
+  var searchFromNavbar = urlParams.get("search");
+
+  if (searchFromNavbar && searchInput) {
+    searchInput.value = searchFromNavbar;
+
+    currentSearch = searchFromNavbar.trim().toLowerCase();
+  }
+
+  var categoryFromUrl = urlParams.get("category");
+
+  if (categoryFromUrl) {
+    currentCategory = categoryFromUrl;
+
+    categoryButtons.forEach(function (button) {
+      button.classList.remove("active");
+
+      if (button.dataset.category === categoryFromUrl) {
+        button.classList.add("active");
+      }
+    });
+  }
+}
+
+loadSearchFromNavbar();
+
 renderProducts();
+
+updateCartCount();
