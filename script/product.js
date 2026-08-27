@@ -1,8 +1,6 @@
 "use strict";
 
-var productCards = Array.from(
-    document.querySelectorAll(".product-card")
-);
+var productCards = Array.from(document.querySelectorAll(".product-card"));
 
 var searchInput = document.getElementById("search-input");
 var searchButton = document.getElementById("search-button");
@@ -26,458 +24,254 @@ var currentLocation = "all";
 var currentSearch = "";
 var currentSort = "default";
 
-
 function getFilteredProducts() {
+  var filteredProducts = productCards.filter(function (product) {
+    var category = product.dataset.category;
+    var location = product.dataset.location;
 
-    var filteredProducts = productCards.filter(function (product) {
+    var productName = product.querySelector("h2").textContent.toLowerCase();
 
-        var category = product.dataset.category;
-        var location = product.dataset.location;
+    var sellerName = product.querySelector("p").textContent.toLowerCase();
 
-        var productName = product
-            .querySelector("h2")
-            .textContent
-            .toLowerCase();
+    var matchesCategory =
+      currentCategory === "all" || category === currentCategory;
 
-        var sellerName = product
-            .querySelector("p")
-            .textContent
-            .toLowerCase();
+    var matchesLocation =
+      currentLocation === "all" || location === currentLocation;
 
-        var matchesCategory =
-            currentCategory === "all" ||
-            category === currentCategory;
+    var matchesSearch =
+      currentSearch === "" ||
+      productName.includes(currentSearch) ||
+      sellerName.includes(currentSearch) ||
+      location.toLowerCase().includes(currentSearch);
 
-        var matchesLocation =
-            currentLocation === "all" ||
-            location === currentLocation;
+    return matchesCategory && matchesLocation && matchesSearch;
+  });
 
-        var matchesSearch =
-            currentSearch === "" ||
-            productName.includes(currentSearch) ||
-            sellerName.includes(currentSearch) ||
-            location.toLowerCase().includes(currentSearch);
-
-        return (
-            matchesCategory &&
-            matchesLocation &&
-            matchesSearch
-        );
+  if (currentSort === "low") {
+    filteredProducts.sort(function (a, b) {
+      return Number(a.dataset.price) - Number(b.dataset.price);
     });
+  } else if (currentSort === "high") {
+    filteredProducts.sort(function (a, b) {
+      return Number(b.dataset.price) - Number(a.dataset.price);
+    });
+  } else if (currentSort === "rating") {
+    filteredProducts.sort(function (a, b) {
+      return Number(b.dataset.rating) - Number(a.dataset.rating);
+    });
+  }
 
-
-    if (currentSort === "low") {
-
-        filteredProducts.sort(function (a, b) {
-
-            return Number(a.dataset.price) -
-                Number(b.dataset.price);
-
-        });
-
-    } else if (currentSort === "high") {
-
-        filteredProducts.sort(function (a, b) {
-
-            return Number(b.dataset.price) -
-                Number(a.dataset.price);
-
-        });
-
-    } else if (currentSort === "rating") {
-
-        filteredProducts.sort(function (a, b) {
-
-            return Number(b.dataset.rating) -
-                Number(a.dataset.rating);
-
-        });
-    }
-
-
-    return filteredProducts;
+  return filteredProducts;
 }
-
 
 function renderProducts() {
+  var filteredProducts = getFilteredProducts();
 
-    var filteredProducts = getFilteredProducts();
+  var totalProducts = filteredProducts.length;
 
-    var totalProducts = filteredProducts.length;
+  var totalPages = Math.ceil(totalProducts / productsPerPage);
 
-    var totalPages = Math.ceil(
-        totalProducts / productsPerPage
-    );
+  if (totalPages === 0) {
+    currentPage = 1;
+  } else if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
 
+  productCards.forEach(function (product) {
+    product.style.display = "none";
+  });
 
-    if (totalPages === 0) {
+  var startIndex = (currentPage - 1) * productsPerPage;
 
-        currentPage = 1;
+  var endIndex = startIndex + productsPerPage;
 
-    } else if (currentPage > totalPages) {
+  var pageProducts = filteredProducts.slice(startIndex, endIndex);
 
-        currentPage = totalPages;
-    }
+  pageProducts.forEach(function (product) {
+    product.style.display = "block";
+  });
 
+  if (totalProducts === 0) {
+    productCount.textContent = "Showing 0 products";
 
-    productCards.forEach(function (product) {
+    noProducts.style.display = "block";
+  } else {
+    noProducts.style.display = "none";
 
-        product.style.display = "none";
+    var showingStart = startIndex + 1;
 
-    });
+    var showingEnd = Math.min(endIndex, totalProducts);
 
+    productCount.textContent =
+      "Showing " +
+      showingStart +
+      "-" +
+      showingEnd +
+      " of " +
+      totalProducts +
+      " products";
+  }
 
-    var startIndex =
-        (currentPage - 1) * productsPerPage;
-
-    var endIndex =
-        startIndex + productsPerPage;
-
-
-    var pageProducts =
-        filteredProducts.slice(
-            startIndex,
-            endIndex
-        );
-
-
-    pageProducts.forEach(function (product) {
-
-        product.style.display = "block";
-
-    });
-
-
-    if (totalProducts === 0) {
-
-        productCount.textContent =
-            "Showing 0 products";
-
-        noProducts.style.display = "block";
-
-    } else {
-
-        noProducts.style.display = "none";
-
-        var showingStart =
-            startIndex + 1;
-
-        var showingEnd =
-            Math.min(
-                endIndex,
-                totalProducts
-            );
-
-        productCount.textContent =
-            "Showing " +
-            showingStart +
-            "-" +
-            showingEnd +
-            " of " +
-            totalProducts +
-            " products";
-    }
-
-
-    updatePagination(totalPages);
+  updatePagination(totalPages);
 }
-
 
 function updatePagination(totalPages) {
+  pageButtons.forEach(function (button) {
+    var pageNumber = Number(button.dataset.page);
 
-    pageButtons.forEach(function (button) {
+    button.classList.remove("active");
 
-        var pageNumber =
-            Number(button.dataset.page);
+    if (pageNumber === currentPage) {
+      button.classList.add("active");
+    }
 
-        button.classList.remove("active");
+    if (pageNumber > totalPages) {
+      button.style.display = "none";
+    } else {
+      button.style.display = "inline-block";
+    }
+  });
 
-        if (pageNumber === currentPage) {
+  previousPage.disabled = currentPage <= 1;
 
-            button.classList.add("active");
-        }
-
-        if (pageNumber > totalPages) {
-
-            button.style.display = "none";
-
-        } else {
-
-            button.style.display =
-                "inline-block";
-        }
-    });
-
-
-    previousPage.disabled =
-        currentPage <= 1;
-
-
-    nextPage.disabled =
-        totalPages === 0 ||
-        currentPage >= totalPages;
+  nextPage.disabled = totalPages === 0 || currentPage >= totalPages;
 }
 
-
 categoryButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    categoryButtons.forEach(function (btn) {
+      btn.classList.remove("active");
+    });
 
-    button.addEventListener(
-        "click",
-        function () {
+    button.classList.add("active");
 
-            categoryButtons.forEach(
-                function (btn) {
-
-                    btn.classList.remove(
-                        "active"
-                    );
-
-                }
-            );
-
-            button.classList.add("active");
-
-            currentCategory =
-                button.dataset.category;
-
-            currentPage = 1;
-
-            renderProducts();
-        }
-    );
-});
-
-
-locationFilter.addEventListener(
-    "change",
-    function () {
-
-        currentLocation =
-            locationFilter.value;
-
-        currentPage = 1;
-
-        renderProducts();
-    }
-);
-
-
-function performSearch() {
-
-    currentSearch =
-        searchInput.value
-            .trim()
-            .toLowerCase();
+    currentCategory = button.dataset.category;
 
     currentPage = 1;
 
     renderProducts();
+  });
+});
+
+locationFilter.addEventListener("change", function () {
+  currentLocation = locationFilter.value;
+
+  currentPage = 1;
+
+  renderProducts();
+});
+
+function performSearch() {
+  currentSearch = searchInput.value.trim().toLowerCase();
+
+  currentPage = 1;
+
+  renderProducts();
 }
 
+searchButton.addEventListener("click", performSearch);
 
-searchButton.addEventListener(
-    "click",
-    performSearch
-);
+searchInput.addEventListener("keyup", function (event) {
+  if (event.key === "Enter") {
+    performSearch();
+  }
+});
 
+sortProducts.addEventListener("change", function () {
+  currentSort = sortProducts.value;
 
-searchInput.addEventListener(
-    "keyup",
-    function (event) {
+  currentPage = 1;
 
-        if (event.key === "Enter") {
-
-            performSearch();
-        }
-    }
-);
-
-
-sortProducts.addEventListener(
-    "change",
-    function () {
-
-        currentSort =
-            sortProducts.value;
-
-        currentPage = 1;
-
-        renderProducts();
-    }
-);
-
+  renderProducts();
+});
 
 pageButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    currentPage = Number(button.dataset.page);
 
-    button.addEventListener(
-        "click",
-        function () {
+    renderProducts();
 
-            currentPage =
-                Number(button.dataset.page);
-
-            renderProducts();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    );
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 });
 
+previousPage.addEventListener("click", function () {
+  if (currentPage > 1) {
+    currentPage--;
 
-previousPage.addEventListener(
-    "click",
-    function () {
+    renderProducts();
 
-        if (currentPage > 1) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+});
 
-            currentPage--;
+nextPage.addEventListener("click", function () {
+  var filteredProducts = getFilteredProducts();
 
-            renderProducts();
+  var totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    }
-);
+  if (currentPage < totalPages) {
+    currentPage++;
 
+    renderProducts();
 
-nextPage.addEventListener(
-    "click",
-    function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+});
 
-        var filteredProducts =
-            getFilteredProducts();
-
-        var totalPages =
-            Math.ceil(
-                filteredProducts.length /
-                productsPerPage
-            );
-
-        if (currentPage < totalPages) {
-
-            currentPage++;
-
-            renderProducts();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    }
-);
-
-
-var addCartButtons =
-    document.querySelectorAll(".add-cart");
-
+var addCartButtons = document.querySelectorAll(".add-cart");
 
 addCartButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    var productCard = button.closest(".product-card");
 
-    button.addEventListener(
-        "click",
-        function () {
+    var id = button.dataset.id;
 
-            var id =
-                button.dataset.id;
+    var name = button.dataset.name;
 
-            var name =
-                button.dataset.name;
+    var price = Number(button.dataset.price);
 
-            var price =
-                Number(button.dataset.price);
+    var image = productCard.querySelector("img").getAttribute("src");
 
+    var location = productCard.dataset.location;
 
-            var productCard =
-                button.closest(
-                    ".product-card"
-                );
+    var cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+    var existingProduct = cart.find(function (item) {
+      return item.id === id;
+    });
 
-            var image =
-                productCard
-                    .querySelector("img")
-                    .src;
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      cart.push({
+        id: id,
+        name: name,
+        price: price,
+        image: image,
+        location: location,
+        quantity: 1,
+      });
+    }
 
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-            var location =
-                productCard.dataset.location;
+    button.textContent = "✓ Added to Cart";
 
-
-            var cart =
-                JSON.parse(
-                    localStorage.getItem(
-                        "cart"
-                    )
-                ) || [];
-
-
-            var existingProduct =
-                cart.find(
-                    function (item) {
-
-                        return item.id === id;
-
-                    }
-                );
-
-
-            if (existingProduct) {
-
-                existingProduct.quantity += 1;
-
-            } else {
-
-                cart.push({
-
-                    id: id,
-                    name: name,
-                    price: price,
-                    image: image,
-                    location: location,
-                    quantity: 1
-
-                });
-            }
-
-
-            localStorage.setItem(
-                "cart",
-                JSON.stringify(cart)
-            );
-
-
-            var originalText =
-                button.textContent;
-
-
-            button.textContent =
-                "✓ Added to Cart";
-
-
-            button.disabled = true;
-
-
-            setTimeout(
-                function () {
-
-                    button.textContent =
-                        originalText;
-
-                    button.disabled = false;
-
-                },
-                1500
-            );
-        }
-    );
+    setTimeout(function () {
+      button.textContent = "Add to Cart";
+    }, 1500);
+  });
 });
-
 
 renderProducts();

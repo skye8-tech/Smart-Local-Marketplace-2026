@@ -1,124 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Shopping Cart | Smart Local Marketplace</title>
 
-    <link rel="stylesheet" href="../style/style.css">
-    <link rel="stylesheet" href="../style/cart.css">
-</head>
+    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="stylesheet" href="../style/cart.css" />
+  </head>
 
-<body>
+  <body>
+    <div id="header"></div>
 
-<div id="header"></div>
-
-
-<main class="cart-page">
-
-    <div class="container">
-
+    <main class="cart-page">
+      <div class="container">
         <div class="cart-header">
+          <h1>Shopping Cart</h1>
 
-            <h1>Shopping Cart</h1>
-
-            <p>
-                Review your selected products before checkout.
-            </p>
-
+          <p>Review your selected products before checkout.</p>
         </div>
-
 
         <div class="cart-layout">
+          <section class="cart-products">
+            <div id="cart-items"></div>
 
-            <section class="cart-products">
+            <div id="empty-cart" class="empty-cart">
+              <h2>Your Cart is Empty</h2>
 
-                <div id="cart-items">
+              <p>You haven't added any products yet.</p>
 
-                </div>
+              <a href="product.html" class="continue-shopping">
+                Start Shopping
+              </a>
+            </div>
+          </section>
 
+          <aside class="cart-summary">
+            <h2>Order Summary</h2>
 
-                <div id="empty-cart" class="empty-cart">
+            <div class="summary-row">
+              <span>Subtotal</span>
 
-                    <h2>Your Cart is Empty</h2>
+              <span id="subtotal"> 0 FCFA </span>
+            </div>
 
-                    <p>
-                        You haven't added any products yet.
-                    </p>
+            <div class="summary-row">
+              <span>Delivery</span>
 
-                    <a href="product.html" class="continue-shopping">
-                        Start Shopping
-                    </a>
+              <span id="delivery"> 0 FCFA </span>
+            </div>
 
-                </div>
+            <div class="summary-line"></div>
 
-            </section>
+            <div class="summary-total">
+              <span>Total</span>
 
+              <span id="total"> 0 FCFA </span>
+            </div>
 
-            <aside class="cart-summary">
+            <a href="form.html" id="checkout-btn" class="continue-btn">
+              Proceed to Checkout
+            </a>
 
-                <h2>Order Summary</h2>
-
-                <div class="summary-row">
-
-                    <span>Subtotal</span>
-
-                    <span id="subtotal">
-                        0 FCFA
-                    </span>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                    <span>Delivery</span>
-
-                    <span id="delivery">
-                        2,000 FCFA
-                    </span>
-
-                </div>
-
-
-                <div class="summary-line"></div>
-
-
-                <div class="summary-total">
-
-                    <span>Total</span>
-
-                    <span id="total">
-                        0 FCFA
-                    </span>
-
-                </div>
-
-
-               <a href="form.html" class="continue-btn">Proceed to Checkout</a>
-
-
-                <a href="product.html" class="continue-btn">
-                    Continue Shopping
-                </a>
-
-            </aside>
-
+            <a href="product.html" class="continue-btn"> Continue Shopping </a>
+          </aside>
         </div>
+      </div>
+    </main>
 
-    </div>
+    <div id="footer"></div>
 
-</main>
-
-
-<div id="footer"></div>
-
-
-<script src="../script/cart.js"></script>
-<script src="../script/layout.js"></script>
-
-</body>
-
+    <script src="../script/layout.js"></script>
+    <script src="../script/cart.js"></script>
+  </body>
 </html>

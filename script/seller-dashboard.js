@@ -6,167 +6,139 @@ var CURRENT_SELLER_KEY = "smartLocalMarketplaceCurrentSeller";
 var currentSellerId = localStorage.getItem(CURRENT_SELLER_KEY);
 
 function getSellers() {
-    var data = localStorage.getItem(STORAGE_KEY);
+  var data = localStorage.getItem(STORAGE_KEY);
 
-    if (!data) {
-        return [];
-    }
+  if (!data) {
+    return [];
+  }
 
-    try {
-        var sellers = JSON.parse(data);
+  try {
+    var sellers = JSON.parse(data);
 
-        return Array.isArray(sellers) ? sellers : [];
-    } catch (error) {
-        return [];
-    }
+    return Array.isArray(sellers) ? sellers : [];
+  } catch (error) {
+    return [];
+  }
 }
 
 function saveSellers(sellers) {
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(sellers)
-    );
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sellers));
 }
 
 function getCurrentSeller() {
-    var sellers = getSellers();
+  var sellers = getSellers();
 
-    return sellers.find(function (seller) {
-        return seller.id === currentSellerId;
-    });
+  return sellers.find(function (seller) {
+    return seller.id === currentSellerId;
+  });
 }
 
 var currentSeller = getCurrentSeller();
 
 if (!currentSeller) {
-    window.location.href = "seller-login.html";
+  window.location.href = "seller-login.html";
 }
 
-var sellerNameElement =
-    document.getElementById("seller-name");
+var sellerNameElement = document.getElementById("seller-name");
 
-var businessNameElement =
-    document.getElementById("business-name");
+var businessNameElement = document.getElementById("business-name");
 
-var sellerStatusElement =
-    document.getElementById("seller-status");
+var sellerStatusElement = document.getElementById("seller-status");
 
-var totalProductsElement =
-    document.getElementById("total-products");
+var totalProductsElement = document.getElementById("total-products");
 
-var sellerProductsList =
-    document.getElementById("seller-products-list");
+var sellerProductsList = document.getElementById("seller-products-list");
 
-var addProductSection =
-    document.getElementById("add-product-section");
+var addProductSection = document.getElementById("add-product-section");
 
-var showAddProductButton =
-    document.getElementById("show-add-product");
+var showAddProductButton = document.getElementById("show-add-product");
 
-var cancelAddProductButton =
-    document.getElementById("cancel-add-product");
+var cancelAddProductButton = document.getElementById("cancel-add-product");
 
-var productForm =
-    document.getElementById("seller-product-form");
+var productForm = document.getElementById("seller-product-form");
 
-var logoutButton =
-    document.getElementById("seller-logout");
-
+var logoutButton = document.getElementById("seller-logout");
 
 function loadSellerInformation() {
+  if (!currentSeller) {
+    return;
+  }
 
-    if (!currentSeller) {
-        return;
-    }
+  if (sellerNameElement) {
+    sellerNameElement.textContent = currentSeller.sellerName || "";
+  }
 
-    if (sellerNameElement) {
-        sellerNameElement.textContent =
-            currentSeller.sellerName;
-    }
+  if (businessNameElement) {
+    businessNameElement.textContent = currentSeller.businessName || "";
+  }
 
-    if (businessNameElement) {
-        businessNameElement.textContent =
-            currentSeller.businessName;
-    }
+  if (sellerStatusElement) {
+    sellerStatusElement.textContent = currentSeller.status || "Pending";
+  }
 
-    if (sellerStatusElement) {
-        sellerStatusElement.textContent =
-            currentSeller.status;
-    }
+  if (!Array.isArray(currentSeller.products)) {
+    currentSeller.products = [];
+  }
 
-    if (!Array.isArray(currentSeller.products)) {
-        currentSeller.products = [];
-    }
+  updateProductCount();
 
-    updateProductCount();
-    renderProducts();
+  renderProducts();
 }
-
 
 function updateProductCount() {
+  if (!totalProductsElement || !currentSeller) {
+    return;
+  }
 
-    if (!totalProductsElement || !currentSeller) {
-        return;
-    }
+  var products = Array.isArray(currentSeller.products)
+    ? currentSeller.products
+    : [];
 
-    var products =
-        Array.isArray(currentSeller.products)
-            ? currentSeller.products
-            : [];
-
-    totalProductsElement.textContent =
-        products.length;
+  totalProductsElement.textContent = products.length;
 }
 
-
 function renderProducts() {
+  if (!sellerProductsList || !currentSeller) {
+    return;
+  }
 
-    if (!sellerProductsList || !currentSeller) {
-        return;
-    }
+  sellerProductsList.innerHTML = "";
 
-    sellerProductsList.innerHTML = "";
+  var products = Array.isArray(currentSeller.products)
+    ? currentSeller.products
+    : [];
 
-    var products =
-        Array.isArray(currentSeller.products)
-            ? currentSeller.products
-            : [];
+  if (products.length === 0) {
+    var emptyMessage = document.createElement("p");
 
-    if (products.length === 0) {
+    emptyMessage.className = "empty-products";
 
-        var emptyMessage =
-            document.createElement("p");
+    emptyMessage.textContent = "No products added yet.";
 
-        emptyMessage.className =
-            "empty-products";
+    sellerProductsList.appendChild(emptyMessage);
 
-        emptyMessage.textContent =
-            "No products added yet.";
+    return;
+  }
 
-        sellerProductsList.appendChild(
-            emptyMessage
-        );
+  products.forEach(function (product) {
+    var productCard = document.createElement("div");
 
-        return;
-    }
+    productCard.className = "seller-product-card";
 
-    products.forEach(function (product) {
-
-        var productCard =
-            document.createElement("div");
-
-        productCard.className =
-            "seller-product-card";
-
-        productCard.innerHTML = `
+    productCard.innerHTML = `
 
             <div class="seller-product-image">
+
                 <img
-                    src="${escapeHTML(product.image || "../images/products/product.jpg")}"
+                    src="${escapeHTML(
+                      product.image || "../images/products/product.jpg",
+                    )}"
                     alt="${escapeHTML(product.name)}"
                     onerror="this.src='../images/products/product.jpg'"
                 >
+
             </div>
+
 
             <div class="seller-product-content">
 
@@ -190,255 +162,182 @@ function renderProducts() {
                     ${escapeHTML(product.description)}
                 </p>
 
+                <span>
+                    Status: ${escapeHTML(product.status)}
+                </span>
+
             </div>
 
         `;
 
-        sellerProductsList.appendChild(
-            productCard
-        );
-
-    });
+    sellerProductsList.appendChild(productCard);
+  });
 }
-
 
 if (showAddProductButton) {
+  showAddProductButton.addEventListener("click", function () {
+    if (addProductSection) {
+      addProductSection.style.display = "block";
+    }
 
-    showAddProductButton.addEventListener(
-        "click",
-        function () {
-
-            addProductSection.style.display =
-                "block";
-
-            showAddProductButton.style.display =
-                "none";
-
-        }
-    );
-
+    showAddProductButton.style.display = "none";
+  });
 }
-
 
 if (cancelAddProductButton) {
+  cancelAddProductButton.addEventListener("click", function () {
+    if (addProductSection) {
+      addProductSection.style.display = "none";
+    }
 
-    cancelAddProductButton.addEventListener(
-        "click",
-        function () {
+    showAddProductButton.style.display = "inline-block";
 
-            addProductSection.style.display =
-                "none";
-
-            showAddProductButton.style.display =
-                "inline-block";
-
-            if (productForm) {
-                productForm.reset();
-            }
-
-        }
-    );
-
+    if (productForm) {
+      productForm.reset();
+    }
+  });
 }
-
 
 if (productForm) {
+  productForm.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-    productForm.addEventListener(
-        "submit",
-        function (event) {
+    if (!currentSeller) {
+      alert("Seller account not found.");
 
-            event.preventDefault();
+      return;
+    }
 
-            if (!currentSeller) {
-                return;
-            }
+    var productNameInput = document.getElementById("product-name");
 
-            var productName =
-                document
-                    .getElementById("product-name")
-                    .value
-                    .trim();
+    var categoryInput = document.getElementById("product-category");
 
-            var category =
-                document
-                    .getElementById("product-category")
-                    .value;
+    var priceInput = document.getElementById("product-price");
 
-            var price =
-                document
-                    .getElementById("product-price")
-                    .value;
+    var stockInput = document.getElementById("product-stock");
 
-            var stock =
-                document
-                    .getElementById("product-stock")
-                    .value;
+    var imageInput = document.getElementById("product-image");
 
-            var image =
-                document
-                    .getElementById("product-image")
-                    .value
-                    .trim();
+    var descriptionInput = document.getElementById("product-description");
 
-            var description =
-                document
-                    .getElementById("product-description")
-                    .value
-                    .trim();
+    var productName = productNameInput.value.trim();
 
-            if (
-                productName === "" ||
-                category === "" ||
-                price === "" ||
-                stock === "" ||
-                description === ""
-            ) {
+    var category = categoryInput.value;
 
-                alert(
-                    "Please fill in all required product fields."
-                );
+    var price = priceInput.value;
 
-                return;
-            }
+    var stock = stockInput.value;
 
-            var product = {
+    var image = imageInput.value.trim();
 
-                id:
-                    "product-" +
-                    Date.now(),
+    var description = descriptionInput.value.trim();
 
-                name:
-                    productName,
+    if (
+      productName === "" ||
+      category === "" ||
+      price === "" ||
+      stock === "" ||
+      description === ""
+    ) {
+      alert("Please fill in all required product fields.");
 
-                category:
-                    category,
+      return;
+    }
 
-                price:
-                    Number(price),
+    if (Number(price) <= 0 || Number(stock) < 0) {
+      alert("Please enter a valid price and stock.");
 
-                stock:
-                    Number(stock),
+      return;
+    }
 
-                image:
-                    image,
+    var product = {
+      id: "product-" + Date.now(),
 
-                description:
-                    description,
+      name: productName,
 
-                sellerId:
-                    currentSeller.id,
+      category: category,
 
-                sellerName:
-                    currentSeller.sellerName,
+      price: Number(price),
 
-                businessName:
-                    currentSeller.businessName,
+      stock: Number(stock),
 
-                location:
-                    currentSeller.location,
+      image: image,
 
-                status:
-                    "Pending",
+      description: description,
 
-                createdAt:
-                    new Date().toISOString()
+      sellerId: currentSeller.id,
 
-            };
+      sellerName: currentSeller.sellerName,
 
-            if (!Array.isArray(currentSeller.products)) {
-                currentSeller.products = [];
-            }
+      businessName: currentSeller.businessName,
 
-            currentSeller.products.push(product);
+      location: currentSeller.location,
 
-            var sellers =
-                getSellers();
+      status: "Pending",
 
-            var sellerIndex =
-                sellers.findIndex(function (seller) {
+      createdAt: new Date().toISOString(),
+    };
 
-                    return seller.id === currentSeller.id;
+    if (!Array.isArray(currentSeller.products)) {
+      currentSeller.products = [];
+    }
 
-                });
+    currentSeller.products.push(product);
 
-            if (sellerIndex === -1) {
+    var sellers = getSellers();
 
-                alert(
-                    "Seller account could not be found."
-                );
+    var sellerIndex = sellers.findIndex(function (seller) {
+      return seller.id === currentSeller.id;
+    });
 
-                return;
-            }
+    if (sellerIndex === -1) {
+      alert("Seller account could not be found.");
 
-            sellers[sellerIndex] =
-                currentSeller;
+      return;
+    }
 
-            saveSellers(sellers);
+    sellers[sellerIndex] = currentSeller;
 
-            currentSeller =
-                sellers[sellerIndex];
+    saveSellers(sellers);
 
-            productForm.reset();
+    currentSeller = sellers[sellerIndex];
 
-            addProductSection.style.display =
-                "none";
+    productForm.reset();
 
-            showAddProductButton.style.display =
-                "inline-block";
+    if (addProductSection) {
+      addProductSection.style.display = "none";
+    }
 
-            updateProductCount();
+    showAddProductButton.style.display = "inline-block";
 
-            renderProducts();
+    updateProductCount();
 
-            alert(
-                "Product added successfully."
-            );
+    renderProducts();
 
-        }
-    );
-
+    alert("Product added successfully. It is now waiting for admin approval.");
+  });
 }
-
 
 if (logoutButton) {
+  logoutButton.addEventListener("click", function () {
+    var confirmLogout = confirm("Are you sure you want to logout?");
 
-    logoutButton.addEventListener(
-        "click",
-        function () {
+    if (!confirmLogout) {
+      return;
+    }
 
-            var confirmLogout =
-                confirm(
-                    "Are you sure you want to logout?"
-                );
+    localStorage.removeItem(CURRENT_SELLER_KEY);
 
-            if (!confirmLogout) {
-                return;
-            }
-
-            localStorage.removeItem(
-                CURRENT_SELLER_KEY
-            );
-
-            window.location.href =
-                "seller-login.html";
-
-        }
-    );
-
+    window.location.href = "seller-login.html";
+  });
 }
-
 
 function escapeHTML(value) {
+  var div = document.createElement("div");
 
-    var div =
-        document.createElement("div");
+  div.textContent = value || "";
 
-    div.textContent =
-        value || "";
-
-    return div.innerHTML;
+  return div.innerHTML;
 }
-
 
 loadSellerInformation();

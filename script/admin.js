@@ -3,185 +3,112 @@
 var STORAGE_KEY = "smartLocalMarketplaceSellers";
 
 var sidebarLinks = document.querySelectorAll(".sidebar nav a");
+
 var adminSections = document.querySelectorAll(".admin-section");
 
+/* SIDEBAR */
 
 sidebarLinks.forEach(function (link) {
+  link.addEventListener("click", function (event) {
+    event.preventDefault();
 
-    link.addEventListener("click", function (event) {
+    var sectionName = link.dataset.section;
 
-        event.preventDefault();
+    if (sectionName === "logout") {
+      var confirmLogout = confirm("Are you sure you want to logout?");
 
-        var sectionName = link.dataset.section;
+      if (confirmLogout) {
+        window.location.href = "../index.html";
+      }
 
-        if (sectionName === "logout") {
+      return;
+    }
 
-            var confirmLogout =
-                confirm("Are you sure you want to logout?");
-
-            if (confirmLogout) {
-
-                window.location.href = "../index.html";
-
-            }
-
-            return;
-        }
-
-
-        sidebarLinks.forEach(function (item) {
-
-            item.classList.remove("active");
-
-        });
-
-
-        link.classList.add("active");
-
-
-        adminSections.forEach(function (section) {
-
-            section.style.display = "none";
-
-        });
-
-
-        var selectedSection =
-            document.getElementById(sectionName);
-
-
-        if (selectedSection) {
-
-            selectedSection.style.display = "block";
-
-        }
-
-
-        if (sectionName === "sellers") {
-
-            loadSellers();
-
-        }
-
+    sidebarLinks.forEach(function (item) {
+      item.classList.remove("active");
     });
 
+    link.classList.add("active");
+
+    adminSections.forEach(function (section) {
+      section.style.display = "none";
+    });
+
+    var selectedSection = document.getElementById(sectionName);
+
+    if (selectedSection) {
+      selectedSection.style.display = "block";
+    }
+
+    if (sectionName === "sellers") {
+      loadSellers();
+    }
+
+    if (sectionName === "products") {
+      loadSellerProducts();
+    }
+  });
 });
 
+/* SELLERS */
 
 function getSellers() {
+  var data = localStorage.getItem(STORAGE_KEY);
 
-    var savedSellers =
-        localStorage.getItem(STORAGE_KEY);
+  if (!data) {
+    return [];
+  }
 
+  try {
+    var sellers = JSON.parse(data);
 
-    if (!savedSellers) {
-
-        return [];
-
-    }
-
-
-    try {
-
-        var sellers =
-            JSON.parse(savedSellers);
-
-
-        if (Array.isArray(sellers)) {
-
-            return sellers;
-
-        }
-
-
-        return [];
-
-    } catch (error) {
-
-        return [];
-
-    }
-
+    return Array.isArray(sellers) ? sellers : [];
+  } catch (error) {
+    return [];
+  }
 }
-
 
 function saveSellers(sellers) {
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(sellers)
-    );
-
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sellers));
 }
 
-
 function loadSellers() {
+  var sellerList = document.getElementById("seller-list");
 
-    var sellerList =
-        document.getElementById("seller-list");
+  var noSellers = document.getElementById("no-sellers");
 
-    var noSellers =
-        document.getElementById("no-sellers");
+  if (!sellerList) {
+    return;
+  }
 
+  sellerList.innerHTML = "";
 
-    if (!sellerList) {
+  var sellers = getSellers();
 
-        return;
-
-    }
-
-
-    sellerList.innerHTML = "";
-
-
-    var sellers = getSellers();
-
-
-    if (sellers.length === 0) {
-
-        if (noSellers) {
-
-            noSellers.style.display = "block";
-
-        }
-
-        return;
-
-    }
-
-
+  if (sellers.length === 0) {
     if (noSellers) {
-
-        noSellers.style.display = "none";
-
+      noSellers.style.display = "block";
     }
 
+    return;
+  }
 
-    sellers.forEach(function (seller) {
+  if (noSellers) {
+    noSellers.style.display = "none";
+  }
 
-        var sellerRequest =
-            document.createElement("div");
+  sellers.forEach(function (seller) {
+    var sellerRequest = document.createElement("div");
 
+    sellerRequest.className = "seller-request";
 
-        sellerRequest.className =
-            "seller-request";
+    sellerRequest.dataset.id = seller.id;
 
+    var initials = getInitials(seller.sellerName || seller.businessName);
 
-        sellerRequest.dataset.id =
-            seller.id;
+    var statusClass = getStatusClass(seller.status);
 
-
-        var initials =
-            getInitials(
-                seller.sellerName || seller.businessName
-            );
-
-
-        var statusClass =
-            getStatusClass(seller.status);
-
-
-        sellerRequest.innerHTML = `
+    sellerRequest.innerHTML = `
 
             <div class="seller-info">
 
@@ -215,841 +142,652 @@ function loadSellers() {
                 <button
                     class="view-btn"
                     type="button">
+
                     View
+
                 </button>
+
 
                 <button
                     class="approve-btn"
                     type="button"
                     ${seller.status === "Verified" ? "disabled" : ""}>
+
                     ${seller.status === "Verified" ? "Approved" : "Approve"}
+
                 </button>
+
 
                 <button
                     class="reject-btn"
                     type="button"
                     ${seller.status === "Rejected" ? "disabled" : ""}>
+
                     ${seller.status === "Rejected" ? "Rejected" : "Reject"}
+
                 </button>
 
             </div>
 
         `;
 
+    sellerList.appendChild(sellerRequest);
+  });
 
-        sellerList.appendChild(sellerRequest);
-
-    });
-
-
-    attachSellerButtons();
-
+  attachSellerButtons();
 }
 
+/* SELLER BUTTONS */
 
 function attachSellerButtons() {
+  var viewButtons = document.querySelectorAll("#seller-list .view-btn");
 
-    var viewButtons =
-        document.querySelectorAll(
-            "#seller-list .view-btn"
-        );
+  var approveButtons = document.querySelectorAll("#seller-list .approve-btn");
 
+  var rejectButtons = document.querySelectorAll("#seller-list .reject-btn");
 
-    var approveButtons =
-        document.querySelectorAll(
-            "#seller-list .approve-btn"
-        );
+  viewButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var sellerRequest = button.closest(".seller-request");
 
+      var sellerId = sellerRequest.dataset.id;
 
-    var rejectButtons =
-        document.querySelectorAll(
-            "#seller-list .reject-btn"
-        );
+      var sellers = getSellers();
 
+      var seller = sellers.find(function (item) {
+        return item.id === sellerId;
+      });
 
-    viewButtons.forEach(function (button) {
+      if (!seller) {
+        return;
+      }
 
-        button.addEventListener(
-            "click",
-            function () {
-
-                var sellerRequest =
-                    button.closest(".seller-request");
-
-
-                var sellerId =
-                    sellerRequest.dataset.id;
-
-
-                var sellers =
-                    getSellers();
-
-
-                var seller =
-                    sellers.find(function (item) {
-
-                        return item.id === sellerId;
-
-                    });
-
-
-                if (!seller) {
-
-                    return;
-
-                }
-
-
-                alert(
-                    "Seller Information\n\n" +
-
-                    "Full Name: " +
-                    seller.sellerName +
-
-                    "\nBusiness: " +
-                    seller.businessName +
-
-                    "\nEmail: " +
-                    seller.email +
-
-                    "\nPhone: " +
-                    seller.phone +
-
-                    "\nLocation: " +
-                    seller.location +
-
-                    "\nCategory: " +
-                    seller.category +
-
-                    "\nDescription: " +
-                    seller.description +
-
-                    "\nStatus: " +
-                    seller.status
-                );
-
-            }
-        );
-
+      alert(
+        "Seller Information\n\n" +
+          "Full Name: " +
+          (seller.sellerName || "") +
+          "\nBusiness: " +
+          (seller.businessName || "") +
+          "\nEmail: " +
+          (seller.email || "") +
+          "\nPhone: " +
+          (seller.phone || "") +
+          "\nLocation: " +
+          (seller.location || "") +
+          "\nCategory: " +
+          (seller.category || "") +
+          "\nDescription: " +
+          (seller.description || "") +
+          "\nStatus: " +
+          (seller.status || ""),
+      );
     });
+  });
 
+  approveButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var sellerRequest = button.closest(".seller-request");
 
-    approveButtons.forEach(function (button) {
+      var sellerId = sellerRequest.dataset.id;
 
-        button.addEventListener(
-            "click",
-            function () {
+      var sellers = getSellers();
 
-                var sellerRequest =
-                    button.closest(".seller-request");
+      var seller = sellers.find(function (item) {
+        return item.id === sellerId;
+      });
 
+      if (!seller) {
+        return;
+      }
 
-                var sellerId =
-                    sellerRequest.dataset.id;
+      var confirmApprove = confirm(
+        "Approve " + seller.businessName + " as a verified seller?",
+      );
 
+      if (!confirmApprove) {
+        return;
+      }
 
-                var sellers =
-                    getSellers();
+      seller.status = "Verified";
 
+      seller.verified = true;
 
-                var seller =
-                    sellers.find(function (item) {
+      saveSellers(sellers);
 
-                        return item.id === sellerId;
+      loadSellers();
 
-                    });
-
-
-                if (!seller) {
-
-                    return;
-
-                }
-
-
-                var confirmApprove =
-                    confirm(
-                        "Approve " +
-                        seller.businessName +
-                        " as a verified seller?"
-                    );
-
-
-                if (!confirmApprove) {
-
-                    return;
-
-                }
-
-
-                seller.status =
-                    "Verified";
-
-
-                seller.verified =
-                    true;
-
-
-                saveSellers(sellers);
-
-
-                loadSellers();
-
-
-                alert(
-                    seller.businessName +
-                    " has been verified successfully."
-                );
-
-            }
-        );
-
+      alert(seller.businessName + " has been verified successfully.");
     });
+  });
 
+  rejectButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var sellerRequest = button.closest(".seller-request");
 
-    rejectButtons.forEach(function (button) {
+      var sellerId = sellerRequest.dataset.id;
 
-        button.addEventListener(
-            "click",
-            function () {
+      var sellers = getSellers();
 
-                var sellerRequest =
-                    button.closest(".seller-request");
+      var seller = sellers.find(function (item) {
+        return item.id === sellerId;
+      });
 
+      if (!seller) {
+        return;
+      }
 
-                var sellerId =
-                    sellerRequest.dataset.id;
+      var confirmReject = confirm(
+        "Reject " + seller.businessName + " seller registration?",
+      );
 
+      if (!confirmReject) {
+        return;
+      }
 
-                var sellers =
-                    getSellers();
+      seller.status = "Rejected";
 
+      seller.verified = false;
 
-                var seller =
-                    sellers.find(function (item) {
+      saveSellers(sellers);
 
-                        return item.id === sellerId;
+      loadSellers();
 
-                    });
-
-
-                if (!seller) {
-
-                    return;
-
-                }
-
-
-                var confirmReject =
-                    confirm(
-                        "Reject " +
-                        seller.businessName +
-                        " seller registration?"
-                    );
-
-
-                if (!confirmReject) {
-
-                    return;
-
-                }
-
-
-                seller.status =
-                    "Rejected";
-
-
-                seller.verified =
-                    false;
-
-
-                saveSellers(sellers);
-
-
-                loadSellers();
-
-
-                alert(
-                    seller.businessName +
-                    " has been rejected."
-                );
-
-            }
-        );
-
+      alert(seller.businessName + " has been rejected.");
     });
-
+  });
 }
-
-
-function getInitials(name) {
-
-    if (!name) {
-
-        return "SL";
-
-    }
-
-
-    var words =
-        name.trim().split(/\s+/);
-
-
-    if (words.length === 1) {
-
-        return words[0]
-            .substring(0, 2)
-            .toUpperCase();
-
-    }
-
-
-    return (
-        words[0].charAt(0) +
-        words[1].charAt(0)
-    ).toUpperCase();
-
-}
-
-
-function getStatusClass(status) {
-
-    if (status === "Verified") {
-
-        return "verified";
-
-    }
-
-
-    if (status === "Rejected") {
-
-        return "rejected";
-
-    }
-
-
-    return "pending";
-
-}
-
-
-function escapeHTML(value) {
-
-    var div =
-        document.createElement("div");
-
-
-    div.textContent =
-        value || "";
-
-
-    return div.innerHTML;
-
-}
-
 
 /* PRODUCT MANAGEMENT */
 
-var searchInput =
-    document.getElementById("product-search");
+function loadSellerProducts() {
+  var productList = document.getElementById("product-list");
 
-var categoryFilter =
-    document.getElementById("category-filter");
+  var noProducts = document.getElementById("no-products");
 
-var locationFilter =
-    document.getElementById("location-filter");
+  if (!productList) {
+    return;
+  }
 
-var sellerFilter =
-    document.getElementById("seller-filter");
+  productList.innerHTML = "";
 
-var statusFilter =
-    document.getElementById("status-filter");
+  var sellers = getSellers();
 
-var resetButton =
-    document.getElementById("reset-filters");
+  var allProducts = [];
 
-var productList =
-    document.getElementById("product-list");
-
-var noProducts =
-    document.getElementById("no-products");
-
-var products =
-    document.querySelectorAll("#product-list tr");
-
-
-function filterProducts() {
-
-    if (
-        !searchInput ||
-        !categoryFilter ||
-        !locationFilter ||
-        !sellerFilter ||
-        !statusFilter ||
-        !productList
-    ) {
-
-        return;
-
+  sellers.forEach(function (seller) {
+    if (!Array.isArray(seller.products)) {
+      return;
     }
 
-
-    var searchValue =
-        searchInput.value.toLowerCase().trim();
-
-    var categoryValue =
-        categoryFilter.value;
-
-    var locationValue =
-        locationFilter.value;
-
-    var sellerValue =
-        sellerFilter.value;
-
-    var statusValue =
-        statusFilter.value;
-
-    var visibleProducts = 0;
-
-
-    products.forEach(function (product) {
-
-        var productName =
-            (product.dataset.product || "")
-                .toLowerCase();
-
-        var category =
-            product.dataset.category || "";
-
-        var location =
-            product.dataset.location || "";
-
-        var seller =
-            product.dataset.seller || "";
-
-        var status =
-            product.dataset.status || "";
-
-
-        var matchesSearch =
-            productName.includes(searchValue);
-
-        var matchesCategory =
-            categoryValue === "all" ||
-            category === categoryValue;
-
-        var matchesLocation =
-            locationValue === "all" ||
-            location === locationValue;
-
-        var matchesSeller =
-            sellerValue === "all" ||
-            seller === sellerValue;
-
-        var matchesStatus =
-            statusValue === "all" ||
-            status === statusValue;
-
-
-        if (
-            matchesSearch &&
-            matchesCategory &&
-            matchesLocation &&
-            matchesSeller &&
-            matchesStatus
-        ) {
-
-            product.style.display = "";
-
-            visibleProducts++;
-
-        } else {
-
-            product.style.display = "none";
-
-        }
-
+    seller.products.forEach(function (product) {
+      allProducts.push(product);
     });
+  });
 
-
+  if (allProducts.length === 0) {
     if (noProducts) {
-
-        noProducts.style.display =
-            visibleProducts === 0
-                ? "block"
-                : "none";
-
+      noProducts.style.display = "block";
     }
 
-}
+    return;
+  }
 
+  if (noProducts) {
+    noProducts.style.display = "none";
+  }
 
-if (searchInput) {
+  allProducts.forEach(function (product) {
+    var row = document.createElement("tr");
 
-    searchInput.addEventListener(
-        "input",
-        filterProducts
-    );
+    row.dataset.id = product.id || "";
 
-}
+    row.dataset.product = product.name || "";
 
+    row.dataset.seller = product.businessName || "";
 
-if (categoryFilter) {
+    row.dataset.category = product.category || "";
 
-    categoryFilter.addEventListener(
-        "change",
-        filterProducts
-    );
+    row.dataset.location = product.location || "";
 
-}
+    row.dataset.status = product.status || "Pending";
 
+    var statusClass = getProductStatusClass(product.status);
 
-if (locationFilter) {
-
-    locationFilter.addEventListener(
-        "change",
-        filterProducts
-    );
-
-}
-
-
-if (sellerFilter) {
-
-    sellerFilter.addEventListener(
-        "change",
-        filterProducts
-    );
-
-}
-
-
-if (statusFilter) {
-
-    statusFilter.addEventListener(
-        "change",
-        filterProducts
-    );
-
-}
-
-
-if (resetButton) {
-
-    resetButton.addEventListener(
-        "click",
-        function () {
-
-            searchInput.value = "";
-
-            categoryFilter.value = "all";
-
-            locationFilter.value = "all";
-
-            sellerFilter.value = "all";
-
-            statusFilter.value = "all";
-
-            filterProducts();
-
-        }
-    );
-
-}
-
-
-/* ADD PRODUCT */
-
-var addProductButton =
-    document.querySelector(".add-product-btn");
-
-var addProductForm =
-    document.getElementById("add-product-form");
-
-var saveProductButton =
-    document.getElementById("save-product");
-
-var cancelProductButton =
-    document.getElementById("cancel-product");
-
-
-if (addProductButton && addProductForm) {
-
-    addProductButton.addEventListener(
-        "click",
-        function () {
-
-            addProductForm.style.display =
-                "block";
-
-        }
-    );
-
-}
-
-
-if (cancelProductButton && addProductForm) {
-
-    cancelProductButton.addEventListener(
-        "click",
-        function () {
-
-            addProductForm.style.display =
-                "none";
-
-        }
-    );
-
-}
-
-
-if (saveProductButton) {
-
-    saveProductButton.addEventListener(
-        "click",
-        function () {
-
-            var productNameInput =
-                document.getElementById("product-name");
-
-            var productSellerInput =
-                document.getElementById("product-seller");
-
-            var productCategoryInput =
-                document.getElementById("product-category");
-
-            var productLocationInput =
-                document.getElementById("product-location");
-
-            var productPriceInput =
-                document.getElementById("product-price");
-
-            var productStatusInput =
-                document.getElementById("product-status");
-
-
-            var productName =
-                productNameInput.value.trim();
-
-            var seller =
-                productSellerInput.value;
-
-            var category =
-                productCategoryInput.value;
-
-            var location =
-                productLocationInput.value;
-
-            var price =
-                productPriceInput.value;
-
-            var status =
-                productStatusInput.value;
-
-
-            if (
-                productName === "" ||
-                seller === "" ||
-                category === "" ||
-                location === "" ||
-                price === ""
-            ) {
-
-                alert(
-                    "Please fill in all product fields."
-                );
-
-                return;
-
-            }
-
-
-            var row =
-                document.createElement("tr");
-
-
-            row.dataset.product =
-                productName;
-
-            row.dataset.seller =
-                seller;
-
-            row.dataset.category =
-                category;
-
-            row.dataset.location =
-                location;
-
-            row.dataset.status =
-                status;
-
-
-            var statusClass =
-                status === "Active"
-                    ? "delivered"
-                    : status === "Rejected"
-                        ? "rejected"
-                        : "pending";
-
-
-            row.innerHTML = `
+    row.innerHTML = `
 
                 <td>
-                    ${escapeHTML(productName)}
+
+                    ${escapeHTML(product.name)}
+
                 </td>
 
-                <td>
-                    ${escapeHTML(seller)}
-                </td>
 
                 <td>
-                    ${escapeHTML(category)}
+
+                    ${escapeHTML(product.businessName)}
+
                 </td>
 
-                <td>
-                    ${escapeHTML(location)}
-                </td>
 
                 <td>
-                    ${Number(price).toLocaleString()}
+
+                    ${escapeHTML(product.category)}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(product.location)}
+
+                </td>
+
+
+                <td>
+
+                    ${Number(product.price || 0).toLocaleString()}
                     FCFA
+
                 </td>
 
+
                 <td>
+
                     <span class="status ${statusClass}">
-                        ${escapeHTML(status)}
+
+                        ${escapeHTML(product.status || "Pending")}
+
                     </span>
+
                 </td>
 
+
                 <td>
+
                     <button
                         type="button"
-                        class="view-product">
+                        class="view-product"
+                        data-id="${escapeHTML(product.id || "")}">
+
                         View
+
                     </button>
+
+                    <button
+                        type="button"
+                        class="approve-product"
+                        data-id="${escapeHTML(product.id || "")}"
+                        ${product.status === "Approved" ? "disabled" : ""}>
+
+                        ${
+                          product.status === "Approved" ? "Approved" : "Approve"
+                        }
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="reject-product"
+                        data-id="${escapeHTML(product.id || "")}"
+                        ${product.status === "Rejected" ? "disabled" : ""}>
+
+                        ${product.status === "Rejected" ? "Rejected" : "Reject"}
+
+                    </button>
+
                 </td>
 
             `;
 
+    productList.appendChild(row);
+  });
 
-            productList.appendChild(row);
-
-
-            productNameInput.value = "";
-
-            productSellerInput.value = "";
-
-            productCategoryInput.value = "";
-
-            productLocationInput.value = "";
-
-            productPriceInput.value = "";
-
-            productStatusInput.value =
-                "Active";
-
-
-            addProductForm.style.display =
-                "none";
-
-
-            products =
-                document.querySelectorAll(
-                    "#product-list tr"
-                );
-
-
-            filterProducts();
-
-        }
-    );
-
+  filterProducts();
 }
 
+/* PRODUCT SEARCH AND FILTER */
 
-/* PRODUCT VIEW */
+function filterProducts() {
+  var searchInput = document.getElementById("product-search");
 
-document.addEventListener(
-    "click",
-    function (event) {
+  var categoryFilter = document.getElementById("category-filter");
 
-        if (
-            !event.target.matches(
-                "#product-list button"
-            )
-        ) {
+  var locationFilter = document.getElementById("location-filter");
 
-            return;
+  var sellerFilter = document.getElementById("seller-filter");
 
-        }
+  var statusFilter = document.getElementById("status-filter");
 
+  var noProducts = document.getElementById("no-products");
 
-        var row =
-            event.target.closest("tr");
+  var rows = document.querySelectorAll("#product-list tr");
 
+  var searchValue = searchInput ? searchInput.value.toLowerCase().trim() : "";
 
-        if (!row) {
+  var categoryValue = categoryFilter ? categoryFilter.value : "all";
 
-            return;
+  var locationValue = locationFilter ? locationFilter.value : "all";
 
-        }
+  var sellerValue = sellerFilter ? sellerFilter.value : "all";
 
+  var statusValue = statusFilter ? statusFilter.value : "all";
 
-        alert(
-            "Product: " +
-            row.dataset.product +
+  var visibleProducts = 0;
 
-            "\nSeller: " +
-            row.dataset.seller +
+  rows.forEach(function (row) {
+    var productName = (row.dataset.product || "").toLowerCase();
 
-            "\nCategory: " +
-            row.dataset.category +
+    var category = row.dataset.category || "";
 
-            "\nLocation: " +
-            row.dataset.location +
+    var location = row.dataset.location || "";
 
-            "\nStatus: " +
-            row.dataset.status
-        );
+    var seller = row.dataset.seller || "";
 
+    var status = row.dataset.status || "";
+
+    var matchesSearch = productName.includes(searchValue);
+
+    var matchesCategory = categoryValue === "all" || category === categoryValue;
+
+    var matchesLocation = locationValue === "all" || location === locationValue;
+
+    var matchesSeller = sellerValue === "all" || seller === sellerValue;
+
+    var matchesStatus = statusValue === "all" || status === statusValue;
+
+    if (
+      matchesSearch &&
+      matchesCategory &&
+      matchesLocation &&
+      matchesSeller &&
+      matchesStatus
+    ) {
+      row.style.display = "";
+
+      visibleProducts++;
+    } else {
+      row.style.display = "none";
     }
-);
+  });
 
-
-/* SETTINGS */
-
-var saveSettings =
-    document.getElementById("save-settings");
-
-
-if (saveSettings) {
-
-    saveSettings.addEventListener(
-        "click",
-        function () {
-
-            alert(
-                "Settings saved successfully."
-            );
-
-        }
-    );
-
+  if (noProducts) {
+    noProducts.style.display = visibleProducts === 0 ? "block" : "none";
+  }
 }
 
+var searchInput = document.getElementById("product-search");
 
+if (searchInput) {
+  searchInput.addEventListener("input", filterProducts);
+}
 
+var categoryFilter = document.getElementById("category-filter");
 
-adminSections.forEach(function (section) {
+if (categoryFilter) {
+  categoryFilter.addEventListener("change", filterProducts);
+}
 
-    if (section.id !== "dashboard") {
+var locationFilter = document.getElementById("location-filter");
 
-        section.style.display = "none";
+if (locationFilter) {
+  locationFilter.addEventListener("change", filterProducts);
+}
 
+var sellerFilter = document.getElementById("seller-filter");
+
+if (sellerFilter) {
+  sellerFilter.addEventListener("change", filterProducts);
+}
+
+var statusFilter = document.getElementById("status-filter");
+
+if (statusFilter) {
+  statusFilter.addEventListener("change", filterProducts);
+}
+
+/* VIEW PRODUCT */
+
+document.addEventListener("click", function (event) {
+  if (event.target.matches(".view-product")) {
+    var productId = event.target.dataset.id;
+
+    var sellers = getSellers();
+
+    var foundProduct = null;
+
+    sellers.some(function (seller) {
+      if (!Array.isArray(seller.products)) {
+        return false;
+      }
+
+      var product = seller.products.find(function (item) {
+        return item.id === productId;
+      });
+
+      if (product) {
+        foundProduct = product;
+
+        return true;
+      }
+
+      return false;
+    });
+
+    if (!foundProduct) {
+      alert("Product not found.");
+
+      return;
     }
 
+    alert(
+      "Product Information\n\n" +
+        "Product: " +
+        foundProduct.name +
+        "\nSeller: " +
+        foundProduct.businessName +
+        "\nCategory: " +
+        foundProduct.category +
+        "\nPrice: " +
+        Number(foundProduct.price).toLocaleString() +
+        " FCFA" +
+        "\nStock: " +
+        foundProduct.stock +
+        "\nLocation: " +
+        foundProduct.location +
+        "\nDescription: " +
+        foundProduct.description +
+        "\nStatus: " +
+        foundProduct.status,
+    );
+  }
 });
 
+/* APPROVE PRODUCT */
+
+document.addEventListener("click", function (event) {
+  if (!event.target.matches(".approve-product")) {
+    return;
+  }
+
+  var productId = event.target.dataset.id;
+
+  var sellers = getSellers();
+
+  var foundProduct = null;
+
+  sellers.some(function (seller) {
+    if (!Array.isArray(seller.products)) {
+      return false;
+    }
+
+    var product = seller.products.find(function (item) {
+      return item.id === productId;
+    });
+
+    if (product) {
+      foundProduct = product;
+
+      return true;
+    }
+
+    return false;
+  });
+
+  if (!foundProduct) {
+    return;
+  }
+
+  var confirmApprove = confirm("Approve " + foundProduct.name + "?");
+
+  if (!confirmApprove) {
+    return;
+  }
+
+  foundProduct.status = "Approved";
+
+  saveSellers(sellers);
+
+  loadSellerProducts();
+
+  alert(foundProduct.name + " has been approved.");
+});
+
+/* REJECT PRODUCT */
+
+document.addEventListener("click", function (event) {
+  if (!event.target.matches(".reject-product")) {
+    return;
+  }
+
+  var productId = event.target.dataset.id;
+
+  var sellers = getSellers();
+
+  var foundProduct = null;
+
+  sellers.some(function (seller) {
+    if (!Array.isArray(seller.products)) {
+      return false;
+    }
+
+    var product = seller.products.find(function (item) {
+      return item.id === productId;
+    });
+
+    if (product) {
+      foundProduct = product;
+
+      return true;
+    }
+
+    return false;
+  });
+
+  if (!foundProduct) {
+    return;
+  }
+
+  var confirmReject = confirm("Reject " + foundProduct.name + "?");
+
+  if (!confirmReject) {
+    return;
+  }
+
+  foundProduct.status = "Rejected";
+
+  saveSellers(sellers);
+
+  loadSellerProducts();
+
+  alert(foundProduct.name + " has been rejected.");
+});
+
+/* RESET FILTERS */
+
+var resetButton = document.getElementById("reset-filters");
+
+if (resetButton) {
+  resetButton.addEventListener("click", function () {
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
+    if (categoryFilter) {
+      categoryFilter.value = "all";
+    }
+
+    if (locationFilter) {
+      locationFilter.value = "all";
+    }
+
+    if (sellerFilter) {
+      sellerFilter.value = "all";
+    }
+
+    if (statusFilter) {
+      statusFilter.value = "all";
+    }
+
+    filterProducts();
+  });
+}
+
+/* HELPER FUNCTIONS */
+
+function getInitials(name) {
+  if (!name) {
+    return "SL";
+  }
+
+  var words = name.trim().split(/\s+/);
+
+  if (words.length === 1) {
+    return words[0].substring(0, 2).toUpperCase();
+  }
+
+  return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+}
+
+function getStatusClass(status) {
+  if (status === "Verified") {
+    return "verified";
+  }
+
+  if (status === "Rejected") {
+    return "rejected";
+  }
+
+  return "pending";
+}
+
+function getProductStatusClass(status) {
+  if (status === "Approved") {
+    return "delivered";
+  }
+
+  if (status === "Rejected") {
+    return "rejected";
+  }
+
+  return "pending";
+}
+
+function escapeHTML(value) {
+  var div = document.createElement("div");
+
+  div.textContent = value || "";
+
+  return div.innerHTML;
+}
+
+/* INITIAL LOAD */
+
+adminSections.forEach(function (section) {
+  if (section.id !== "dashboard") {
+    section.style.display = "none";
+  }
+});
 
 loadSellers();
-filterProducts();
+
+loadSellerProducts();
