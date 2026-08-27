@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Products | Smart Local Marketplace</title>
+
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/product.css">
+</head>
+
+<body>
+
+    <div id="header"></div>
+
+    <main>
+
+        <section class="products-page">
+
+            <div class="container">
+
+                <div class="products-heading">
+
+                    <h1>Discover Products</h1>
+
+                    <p>
+                        Find quality products from trusted local sellers.
+                    </p>
+
+                </div>
+
+
+                <div class="products-search">
+
+                    <input
+                        type="search"
+                        id="search-input"
+                        placeholder="Search for products..."
+                    >
+
+                    <button
+                        type="button"
+                        id="search-button"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+
+                <div class="location-filter">
+
+                    <div>
+
+                        <h2>Find Products Near You</h2>
+
+                        <p>
+                            Select your location to discover products from sellers near you.
+                        </p>
+
+                    </div>
+
+                    <select id="location-filter">
+
+                        <option value="all">All Locations</option>
+
+                        <option value="Bamenda">Bamenda</option>
+
+                        <option value="Buea">Buea</option>
+
+                        <option value="Douala">Douala</option>
+
+                        <option value="Yaounde">Yaounde</option>
+
+                        <option value="Kumba">Kumba</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="products-content">
+
+
+                    <aside class="products-sidebar">
+
+                        <h2>Categories</h2>
+
+
+                        <button
+                            type="button"
+                            class="category-filter active"
+                            data-category="all"
+                        >
+                            All Products
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="fashion"
+                        >
+                            Fashion & Clothing
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="electronics"
+                        >
+                            Electronics
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="phones"
+                        >
+                            Phones & Accessories
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="food"
+                        >
+                            Food & Groceries
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="beauty"
+                        >
+                            Beauty & Personal Care
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="home"
+                        >
+                            Home & Furniture
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="category-filter"
+                            data-category="agriculture"
+                        >
+                            Agriculture
+                        </button>
+
+                    </aside>
+
+
+                    <section class="products-area">
+
+
+                        <div class="products-top">
+
+                            <p id="product-count">
+                                Showing 15 products
+                            </p>
+
+
+                            <select id="sort-products">
+
+                                <option value="default">
+                                    Sort By
+                                </option>
+
+                                <option value="low">
+                                    Price: Low to High
+                                </option>
+
+                                <option value="high">
+                                    Price: High to Low
+                                </option>
+
+                                <option value="rating">
+                                    Highest Rated
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div
+                            class="products-grid"
+                            id="products-grid"
+                        >
+
+
+                            <article
+                                class="product-card"
+                                data-category="fashion"
+                                data-location="Bamenda"
+                                data-price="25000"
+                                data-rating="4.8"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        New
+                                    </span>
+
+                                    <img
+                                        src="../images/products/printdress.jpg"
+                                        alt="African Print Dress"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Fashion
+                                    </span>
+
+                                    <h2>African Print Dress</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 25,000</h3>
+
+                                    <p>Grace Fashion Store</p>
+
+                                    <span class="location">
+                                        Bamenda
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=dress001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="dress001"
+                                            data-name="African Print Dress"
+                                            data-price="25000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="fashion"
+                                data-location="Bamenda"
+                                data-price="18000"
+                                data-rating="4.7"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Popular
+                                    </span>
+
+                                    <img
+                                        src="../images/products/shoes.jpg"
+                                        alt="Fashion Shoes"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Fashion
+                                    </span>
+
+                                    <h2>Fashion Shoes</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 18,000</h3>
+
+                                    <p>Fashion House</p>
+
+                                    <span class="location">
+                                        Bamenda
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=shoes001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="shoes001"
+                                            data-name="Fashion Shoes"
+                                            data-price="18000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="electronics"
+                                data-location="Buea"
+                                data-price="350000"
+                                data-rating="4.9"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Featured
+                                    </span>
+
+                                    <img
+                                        src="../images/products/laptop.jpg"
+                                        alt="HP Laptop"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Electronics
+                                    </span>
+
+                                    <h2>HP Laptop</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 350,000</h3>
+
+                                    <p>Tech World Store</p>
+
+                                    <span class="location">
+                                        Buea
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=laptop001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="laptop001"
+                                            data-name="HP Laptop"
+                                            data-price="350000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="phones"
+                                data-location="Douala"
+                                data-price="180000"
+                                data-rating="4.8"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        New
+                                    </span>
+
+                                    <img
+                                        src="../images/products/samsung.jpg"
+                                        alt="Samsung Smartphone"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Phones
+                                    </span>
+
+                                    <h2>Samsung Smartphone</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 180,000</h3>
+
+                                    <p>Mobile Hub</p>
+
+                                    <span class="location">
+                                        Douala
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=phone001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="phone001"
+                                            data-name="Samsung Smartphone"
+                                            data-price="180000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="fashion"
+                                data-location="Yaounde"
+                                data-price="20000"
+                                data-rating="4.5"
+                            >
+
+                                <div class="product-image">
+
+                                    <img
+                                        src="../images/products/handbag.jpg"
+                                        alt="Leather Handbag"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Fashion
+                                    </span>
+
+                                    <h2>Leather Handbag</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 20,000</h3>
+
+                                    <p>Grace Fashion Store</p>
+
+                                    <span class="location">
+                                        Yaounde
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=bag001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="bag001"
+                                            data-name="Leather Handbag"
+                                            data-price="20000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="food"
+                                data-location="Bamenda"
+                                data-price="5000"
+                                data-rating="4.9"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Fresh
+                                    </span>
+
+                                    <img
+                                        src="../images/products/vegitablesjpg.jpg"
+                                        alt="Fresh Vegetables"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Food
+                                    </span>
+
+                                    <h2>Fresh Vegetables</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 5,000</h3>
+
+                                    <p>Green Farm</p>
+
+                                    <span class="location">
+                                        Bamenda
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=vegetables001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="vegetables001"
+                                            data-name="Fresh Vegetables"
+                                            data-price="5000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="fashion"
+                                data-location="Kumba"
+                                data-price="15000"
+                                data-rating="4.6"
+                            >
+
+                                <div class="product-image">
+
+                                    <img
+                                        src="../images/products/watch.jpg"
+                                        alt="Fashion Watch"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Accessories
+                                    </span>
+
+                                    <h2>Fashion Watch</h2>
+
+
+                                    <div class="rating">
+
+                                    </div>
+
+
+                                    <h3>FCFA 15,000</h3>
+
+                                    <p>Style Store</p>
+
+                                    <span class="location">
+                                        Kumba
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=watch001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="watch001"
+                                            data-name="Fashion Watch"
+                                            data-price="15000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="food"
+                                data-location="Douala"
+                                data-price="4500"
+                                data-rating="4.7"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Popular
+                                    </span>
+
+                                    <img
+                                        src="../images/products/oil.jpg"
+                                        alt="Cooking Oil"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Food
+                                    </span>
+
+                                    <h2>Cooking Oil</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.7</strong>
+                                    </div>
+
+                                    <h3>FCFA 4,500</h3>
+
+                                    <p>Local Grocery Store</p>
+
+                                    <span class="location">
+                                        Douala
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=oil001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="oil001"
+                                            data-name="Cooking Oil"
+                                            data-price="4500"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="electronics"
+                                data-location="Bamenda"
+                                data-price="35000"
+                                data-rating="4.7"
+                            >
+
+                                <div class="product-image">
+
+                                    <img
+                                        src="../images/products/speaker.jpg"
+                                        alt="Bluetooth Speaker"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Electronics
+                                    </span>
+
+                                    <h2>Bluetooth Speaker</h2>
+
+
+                                    <div class="rating">
+
+                                        <span>★★★★★</span>
+
+                                        <strong>4.7</strong>
+
+                                    </div>
+
+
+                                    <h3>FCFA 35,000</h3>
+
+                                    <p>Tech World Store</p>
+
+                                    <span class="location">
+                                        Bamenda
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=speaker001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="speaker001"
+                                            data-name="Bluetooth Speaker"
+                                            data-price="35000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="phones"
+                                data-location="Bamenda"
+                                data-price="220000"
+                                data-rating="4.8"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        New
+                                    </span>
+
+                                    <img
+                                        src="../images/products/iphone.jpg"
+                                        alt="iPhone Smartphone"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Phones
+                                    </span>
+
+                                    <h2>iPhone Smartphone</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.8</strong>
+                                    </div>
+
+                                    <h3>FCFA 220,000</h3>
+
+                                    <p>Mobile Hub</p>
+
+                                    <span class="location">
+                                        Bamenda
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=iphone001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="iphone001"
+                                            data-name="iPhone Smartphone"
+                                            data-price="220000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="home"
+                                data-location="Buea"
+                                data-price="45000"
+                                data-rating="4.6"
+                            >
+
+                                <div class="product-image">
+
+                                    <img
+                                        src="../images/products/chair.jpg"
+                                        alt="Office Chair"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Home
+                                    </span>
+
+                                    <h2>Office Chair</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.6</strong>
+                                    </div>
+
+                                    <h3>FCFA 45,000</h3>
+
+                                    <p>Home Comfort Store</p>
+
+                                    <span class="location">
+                                        Buea
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=chair001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="chair001"
+                                            data-name="Office Chair"
+                                            data-price="45000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="beauty"
+                                data-location="Yaounde"
+                                data-price="12000"
+                                data-rating="4.7"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Popular
+                                    </span>
+
+                                    <img
+                                        src="../images/products/perfume.jpg"
+                                        alt="Luxury Perfume"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Beauty
+                                    </span>
+
+                                    <h2>Luxury Perfume</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.7</strong>
+                                    </div>
+
+                                    <h3>FCFA 12,000</h3>
+
+                                    <p>Beauty World</p>
+
+                                    <span class="location">
+                                        Yaounde
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=perfume001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="perfume001"
+                                            data-name="Luxury Perfume"
+                                            data-price="12000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="agriculture"
+                                data-location="Kumba"
+                                data-price="10000"
+                                data-rating="4.9"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Fresh
+                                    </span>
+
+                                    <img
+                                        src="../images/products/corn.jpg"
+                                        alt="Fresh Corn"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Agriculture
+                                    </span>
+
+                                    <h2>Fresh Corn</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.9</strong>
+                                    </div>
+
+                                    <h3>FCFA 10,000</h3>
+
+                                    <p>Green Farm</p>
+
+                                    <span class="location">
+                                        Kumba
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=corn001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="corn001"
+                                            data-name="Fresh Corn"
+                                            data-price="10000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="electronics"
+                                data-location="Douala"
+                                data-price="65000"
+                                data-rating="4.5"
+                            >
+
+                                <div class="product-image">
+
+                                    <img
+                                        src="../images/products/headphones.jpg"
+                                        alt="Wireless Headphones"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Electronics
+                                    </span>
+
+                                    <h2>Wireless Headphones</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.5</strong>
+                                    </div>
+
+                                    <h3>FCFA 65,000</h3>
+
+                                    <p>Tech World Store</p>
+
+                                    <span class="location">
+                                        Douala
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=headphones001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="headphones001"
+                                            data-name="Wireless Headphones"
+                                            data-price="65000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="fashion"
+                                data-location="Buea"
+                                data-price="30000"
+                                data-rating="4.8"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        New
+                                    </span>
+
+                                    <img
+                                        src="../images/products/jacket.jpg"
+                                        alt="Denim Jacket"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Fashion
+                                    </span>
+
+                                    <h2>Denim Jacket</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.8</strong>
+                                    </div>
+
+                                    <h3>FCFA 30,000</h3>
+
+                                    <p>Fashion House</p>
+
+                                    <span class="location">
+                                        Buea
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=jacket001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="jacket001"
+                                            data-name="Denim Jacket"
+                                            data-price="30000"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                            <article
+                                class="product-card"
+                                data-category="food"
+                                data-location="Yaounde"
+                                data-price="7500"
+                                data-rating="4.7"
+                            >
+
+                                <div class="product-image">
+
+                                    <span class="product-badge">
+                                        Fresh
+                                    </span>
+
+                                    <img
+                                        src="../images/products/rice.jpg"
+                                        alt="Premium Rice"
+                                    >
+
+                                </div>
+
+
+                                <div class="product-info">
+
+                                    <span class="product-category">
+                                        Food
+                                    </span>
+
+                                    <h2>Premium Rice</h2>
+
+                                    <div class="rating">
+                                        <span>★★★★★</span>
+                                        <strong>4.7</strong>
+                                    </div>
+
+                                    <h3>FCFA 7,500</h3>
+
+                                    <p>Local Grocery Store</p>
+
+                                    <span class="location">
+                                        Yaounde
+                                    </span>
+
+
+                                    <div class="product-buttons">
+
+                                        <a
+                                            href="productdetail.html?id=rice001"
+                                            class="view-product"
+                                        >
+                                            View Product
+                                        </a>
+
+                                        <button
+                                            type="button"
+                                            class="add-cart"
+                                            data-id="rice001"
+                                            data-name="Premium Rice"
+                                            data-price="7500"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                        </div>
+
+
+                        <p
+                            id="no-products"
+                            class="no-products"
+                            style="display: none;"
+                        >
+                            No products found in this category or location.
+                        </p>
+
+
+                        <div class="pagination">
+
+                            <button
+                                type="button"
+                                id="previous-page"
+                            >
+                                Previous
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="page-btn active"
+                                data-page="1"
+                            >
+                                1
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="page-btn"
+                                data-page="2"
+                            >
+                                2
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="page-btn"
+                                data-page="3"
+                            >
+                                3
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="next-page"
+                            >
+                                Next
+                            </button>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <div id="footer"></div>
+
+
+    <script src="../script/layout.js"></script>
+    <script src="../script/product.js"></script>
+
+</body>
+
+</html>

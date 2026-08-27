@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Smart Local Marketplace | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="../style/admin.css" />
+  </head>
+
+  <body>
+    <header class="admin-header">
+      <div class="logo">
+        <h2>SLM</h2>
+      </div>
+
+      <div class="admin-profile">
+        <span>Admin</span>
+      </div>
+    </header>
+
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <nav>
+          <a href="#" class="active" data-section="dashboard">Dashboard</a>
+          <a href="#" data-section="products">Products</a>
+          <a href="#" data-section="sellers">Sellers</a>
+          <a href="#" data-section="customers">Customers</a>
+          <a href="#" data-section="orders">Orders</a>
+          <a href="#" data-section="categories">Categories</a>
+          <a href="#" data-section="reviews">Reviews</a>
+          <a href="#" data-section="locations">Locations</a>
+          <a href="#" data-section="reports">Reports</a>
+          <a href="#" data-section="settings">Settings</a>
+          <a href="#" data-section="logout">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <div class="page-header">
+          <div>
+            <h1>Smart Local Marketplace</h1>
+            <p>Manage your marketplace from one place.</p>
+          </div>
+        </div>
+
+        <section id="dashboard" class="admin-section">
+          <section class="stats">
+            <div class="stat-card">
+              <h3>Total Products</h3>
+              <h2>20</h2>
+              <p>Products listed on the marketplace</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Registered Sellers</h3>
+              <h2 id="seller-count">45</h2>
+              <p>Active sellers on the platform</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Registered Customers</h3>
+              <h2>140</h2>
+              <p>Customers using the marketplace</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Total Orders</h3>
+              <h2>20</h2>
+              <p>Orders placed by customers</p>
+            </div>
+          </section>
+
+          <section class="dashboard-section">
+            <div class="section-header">
+              <div>
+                <h2>Marketplace Sales</h2>
+              </div>
+
+              <select>
+                <option>This Week</option>
+                <option>This Month</option>
+                <option>This Year</option>
+              </select>
+            </div>
+
+            <div class="chart-container">
+              <div class="chart-placeholder">
+                <p>Sales Overview</p>
+                <span>Marketplace sales statistics will appear here.</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="dashboard-section">
+            <div class="section-header">
+              <h2>Recent Marketplace Orders</h2>
+
+              <a href="#">View All Orders</a>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Seller</th>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>#SLM1001</td>
+                    <td>Glory Anyah</td>
+                    <td>Tech Hub</td>
+                    <td>Laptop</td>
+                    <td>350,000 FCFA</td>
+                    <td>
+                      <span class="status processing"> Processing </span>
+                    </td>
+                    <td>
+                      <button>View</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>#SLM1002</td>
+                    <td>John Doe</td>
+                    <td>Fashion Store</td>
+                    <td>Dress</td>
+                    <td>75,000 FCFA</td>
+                    <td>
+                      <span class="status delivered"> Delivered </span>
+                    </td>
+                    <td>
+                      <button>View</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>#SLM1003</td>
+                    <td>Mary Smith</td>
+                    <td>Fresh Farm</td>
+                    <td>Vegetables</td>
+                    <td>15,000 FCFA</td>
+                    <td>
+                      <span class="status pending"> Pending </span>
+                    </td>
+                    <td>
+                      <button>View</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section
+          id="products"
+          class="dashboard-section admin-section product-management"
+        >
+          <div class="section-header">
+            <div>
+              <h2>Product Management</h2>
+              <p>Manage products listed by marketplace sellers.</p>
+            </div>
+
+            <button class="add-product-btn">Add Product</button>
+          </div>
+
+          <div class="add-product-form" id="add-product-form">
+            <h3>Add New Product</h3>
+
+            <div class="form-grid">
+              <input type="text" id="product-name" placeholder="Product name" />
+
+              <select id="product-seller">
+                <option value="">Select Seller</option>
+                <option value="Tech Hub">Tech Hub</option>
+                <option value="Fashion Store">Fashion Store</option>
+                <option value="Fresh Farm">Fresh Farm</option>
+                <option value="Glory Store">Glory Store</option>
+              </select>
+
+              <select id="product-category">
+                <option value="">Select Category</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Food & Groceries">Food & Groceries</option>
+                <option value="Home & Garden">Home & Garden</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Services">Services</option>
+              </select>
+
+              <select id="product-location">
+                <option value="">Select Location</option>
+                <option value="Bamenda">Bamenda</option>
+                <option value="Buea">Buea</option>
+                <option value="Douala">Douala</option>
+                <option value="Yaounde">Yaounde</option>
+                <option value="Kumba">Kumba</option>
+              </select>
+
+              <input type="number" id="product-price" placeholder="Price" />
+
+              <select id="product-status">
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" id="save-product">Save Product</button>
+
+              <button type="button" id="cancel-product">Cancel</button>
+            </div>
+          </div>
+
+          <div class="product-filters">
+            <input
+              type="text"
+              id="product-search"
+              placeholder="Search products..."
+            />
+
+            <select id="category-filter">
+              <option value="all">All Categories</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Food & Groceries">Food & Groceries</option>
+              <option value="Home & Garden">Home & Garden</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Services">Services</option>
+            </select>
+
+            <select id="location-filter">
+              <option value="all">All Locations</option>
+              <option value="Bamenda">Bamenda</option>
+              <option value="Buea">Buea</option>
+              <option value="Douala">Douala</option>
+              <option value="Yaounde">Yaounde</option>
+              <option value="Kumba">Kumba</option>
+            </select>
+
+            <select id="seller-filter">
+              <option value="all">All Sellers</option>
+              <option value="Tech Hub">Tech Hub</option>
+              <option value="Fashion Store">Fashion Store</option>
+              <option value="Fresh Farm">Fresh Farm</option>
+              <option value="Glory Store">Glory Store</option>
+            </select>
+
+            <select id="status-filter">
+              <option value="all">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+
+            <button id="reset-filters">Reset</button>
+          </div>
+
+          <div class="table-container">
+            <table class="product-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Seller</th>
+                  <th>Category</th>
+                  <th>Location</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody id="product-list">
+                <tr
+                  data-product="Nike Shoes"
+                  data-seller="Fashion Store"
+                  data-category="Fashion"
+                  data-location="Bamenda"
+                  data-status="Active"
+                >
+                  <td>Nike Shoes</td>
+                  <td>Fashion Store</td>
+                  <td>Fashion</td>
+                  <td>Bamenda</td>
+                  <td>75,000 FCFA</td>
+                  <td>
+                    <span class="status delivered"> Active </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-product="Laptop"
+                  data-seller="Tech Hub"
+                  data-category="Electronics"
+                  data-location="Buea"
+                  data-status="Active"
+                >
+                  <td>Laptop</td>
+                  <td>Tech Hub</td>
+                  <td>Electronics</td>
+                  <td>Buea</td>
+                  <td>350,000 FCFA</td>
+                  <td>
+                    <span class="status delivered"> Active </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-product="Tomatoes"
+                  data-seller="Fresh Farm"
+                  data-category="Food & Groceries"
+                  data-location="Bamenda"
+                  data-status="Pending"
+                >
+                  <td>Tomatoes</td>
+                  <td>Fresh Farm</td>
+                  <td>Food & Groceries</td>
+                  <td>Bamenda</td>
+                  <td>2,000 FCFA</td>
+                  <td>
+                    <span class="status pending"> Pending </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-product="Summer Dress"
+                  data-seller="Glory Store"
+                  data-category="Fashion"
+                  data-location="Douala"
+                  data-status="Active"
+                >
+                  <td>Summer Dress</td>
+                  <td>Glory Store</td>
+                  <td>Fashion</td>
+                  <td>Douala</td>
+                  <td>35,000 FCFA</td>
+                  <td>
+                    <span class="status delivered"> Active </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr
+                  data-product="Face Cream"
+                  data-seller="Glory Store"
+                  data-category="Beauty"
+                  data-location="Yaounde"
+                  data-status="Rejected"
+                >
+                  <td>Face Cream</td>
+                  <td>Glory Store</td>
+                  <td>Beauty</td>
+                  <td>Yaounde</td>
+                  <td>12,000 FCFA</td>
+                  <td>
+                    <span class="status rejected"> Rejected </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p id="no-products" class="no-products">No products found.</p>
+          </div>
+        </section>
+
+        <section id="sellers" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Seller Management</h2>
+              <p>Manage sellers registered on Smart Local Marketplace.</p>
+            </div>
+          </div>
+
+          <div id="seller-list">
+            <div class="seller-request">
+              <div class="seller-info">
+                <div class="seller-avatar">JD</div>
+
+                <div>
+                  <h3>John Fashion Store</h3>
+                  <p>John Doe | Bamenda</p>
+                  <span>Pending Verification</span>
+                </div>
+              </div>
+
+              <div class="seller-actions">
+                <button class="view-btn">View</button>
+
+                <button class="approve-btn">Approve</button>
+
+                <button class="reject-btn">Reject</button>
+              </div>
+            </div>
+
+            <div class="seller-request">
+              <div class="seller-info">
+                <div class="seller-avatar">PS</div>
+
+                <div>
+                  <h3>Tech Hub</h3>
+                  <p>Peter Smith | Buea</p>
+                  <span>Pending Verification</span>
+                </div>
+              </div>
+
+              <div class="seller-actions">
+                <button class="view-btn">View</button>
+
+                <button class="approve-btn">Approve</button>
+
+                <button class="reject-btn">Reject</button>
+              </div>
+            </div>
+          </div>
+
+          <p id="no-sellers" style="display: none">
+            No seller registrations found.
+          </p>
+        </section>
+
+        <section id="customers" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Customer Management</h2>
+              <p>View and manage marketplace customers.</p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Email</th>
+                  <th>Location</th>
+                  <th>Orders</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Glory Anyah</td>
+                  <td>glory@example.com</td>
+                  <td>Bamenda</td>
+                  <td>12</td>
+                  <td>
+                    <span class="status delivered"> Active </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>John Doe</td>
+                  <td>john@example.com</td>
+                  <td>Buea</td>
+                  <td>8</td>
+                  <td>
+                    <span class="status delivered"> Active </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="orders" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Order Management</h2>
+              <p>Manage marketplace customer orders.</p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Seller</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>#SLM1001</td>
+                  <td>Glory Anyah</td>
+                  <td>Tech Hub</td>
+                  <td>Laptop</td>
+                  <td>350,000 FCFA</td>
+                  <td>
+                    <span class="status processing"> Processing </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>#SLM1002</td>
+                  <td>John Doe</td>
+                  <td>Fashion Store</td>
+                  <td>Dress</td>
+                  <td>75,000 FCFA</td>
+                  <td>
+                    <span class="status delivered"> Delivered </span>
+                  </td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="categories" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Marketplace Categories</h2>
+              <p>Manage products and services categories.</p>
+            </div>
+          </div>
+
+          <div class="category-list">
+            <div class="category-card">
+              <h3>Fashion</h3>
+              <p>48 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Electronics</h3>
+              <p>35 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Food & Groceries</h3>
+              <p>62 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Home & Garden</h3>
+              <p>28 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Beauty</h3>
+              <p>31 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Services</h3>
+              <p>46 Listings</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="reviews" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Customer Reviews</h2>
+              <p>Monitor reviews and feedback from marketplace customers.</p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Product</th>
+                  <th>Seller</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Glory Anyah</td>
+                  <td>Laptop</td>
+                  <td>Tech Hub</td>
+                  <td>5/5</td>
+                  <td>Excellent product.</td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>John Doe</td>
+                  <td>Summer Dress</td>
+                  <td>Glory Store</td>
+                  <td>4/5</td>
+                  <td>Good quality.</td>
+                  <td>
+                    <button>View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="locations" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Marketplace Locations</h2>
+              <p>Manage locations where products and sellers operate.</p>
+            </div>
+          </div>
+
+          <div class="category-list">
+            <div class="category-card">
+              <h3>Bamenda</h3>
+              <p>85 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Buea</h3>
+              <p>60 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Douala</h3>
+              <p>75 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Yaounde</h3>
+              <p>55 Products</p>
+            </div>
+
+            <div class="category-card">
+              <h3>Kumba</h3>
+              <p>25 Products</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="reports" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Marketplace Reports</h2>
+              <p>View marketplace performance and activity reports.</p>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <h3>Total Sales</h3>
+              <h2>12.5M FCFA</h2>
+              <p>Total marketplace sales</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Completed Orders</h3>
+              <h2>280</h2>
+              <p>Successfully completed orders</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Active Sellers</h3>
+              <h2>38</h2>
+              <p>Currently active sellers</p>
+            </div>
+
+            <div class="stat-card">
+              <h3>Customer Reviews</h3>
+              <h2>185</h2>
+              <p>Total reviews received</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="dashboard-section admin-section">
+          <div class="section-header">
+            <div>
+              <h2>Admin Settings</h2>
+              <p>Manage Smart Local Marketplace settings.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <input
+              type="text"
+              value="Smart Local Marketplace"
+              placeholder="Marketplace name"
+            />
+
+            <input
+              type="email"
+              value="admin@smartlocalmarketplace.com"
+              placeholder="Admin email"
+            />
+
+            <select>
+              <option>Cameroon</option>
+              <option>Nigeria</option>
+              <option>Ghana</option>
+            </select>
+          </div>
+
+          <div class="form-buttons">
+            <button type="button" id="save-settings">Save Settings</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="../script/admin.js"></script>
+  </body>
+</html>

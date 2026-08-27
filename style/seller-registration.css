@@ -1,0 +1,266 @@
+.seller-registration {
+    padding: 60px 20px;
+    background: #f5f7fa;
+    min-height: 100vh;
+}
+
+.seller-registration .container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.seller-registration-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.seller-registration-header h1 {
+    font-size: 38px;
+    color: #001f4d;
+    margin-bottom: 12px;
+}
+
+.seller-registration-header p {
+    color: #666;
+    font-size: 17px;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.seller-registration-container {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 40px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+.seller-info {
+    padding: 20px;
+}
+
+.seller-info h2 {
+    color: #001f4d;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.seller-info > p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.seller-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.benefit {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+
+
+.benefit h3 {
+    margin: 0 0 5px;
+    color: #222;
+    font-size: 17px;
+}
+
+.benefit p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.seller-form-container {
+    background: #ffffff;
+}
+
+.seller-form-container form h2 {
+    color: #001f4d;
+    margin-bottom: 25px;
+    font-size: 26px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d5d9df;
+    border-radius: 7px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #001f4d;
+    box-shadow: 0 0 0 3px rgba(0, 31, 77, 0.08);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.form-group small,
+.terms small {
+    display: block;
+    margin-top: 5px;
+    color: #d32f2f;
+    font-size: 13px;
+}
+
+.terms {
+    margin: 5px 0 25px;
+}
+
+.terms label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.terms input {
+    margin-top: 4px;
+}
+
+.terms a {
+    color: #001f4d;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+.register-seller-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
+    background: #001f4d;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-seller-btn:hover {
+    background: #003b7a;
+    transform: translateY(-1px);
+}
+
+.seller-login {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.seller-login a {
+    color: #001f4d;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.seller-login a:hover {
+    text-decoration: underline;
+}
+
+.registration-message {
+    display: none;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 7px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.registration-message.success {
+    display: block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.registration-message.error {
+    display: block;
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+@media (max-width: 900px) {
+
+    .seller-registration-container {
+        grid-template-columns: 1fr;
+    }
+
+    .seller-info {
+        padding: 0;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .seller-registration {
+        padding: 40px 15px;
+    }
+
+    .seller-registration-header h1 {
+        font-size: 30px;
+    }
+
+    .seller-registration-container {
+        padding: 25px 20px;
+        gap: 30px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .seller-info h2 {
+        font-size: 24px;
+    }
+
+}

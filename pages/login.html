@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Login | Smart Local Marketplace</title>
+
+    <link rel="stylesheet" href="../style/login.css" />
+  </head>
+
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <h1>Smart Local Marketplace</h1>
+
+        <h2>Admin Login</h2>
+
+        <p>Login to access the marketplace administration dashboard.</p>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email"> Admin Email </label>
+
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter admin email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password"> Admin Password </label>
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter admin password"
+              required
+            />
+          </div>
+
+          ,<a href="../pages/admin.html" class="back-home">Login</a>
+
+          <p id="login-message"></p>
+        </form>
+
+        <a href="../index.html" class="back-home"> Back to Home </a>
+      </div>
+    </div>
+
+    <script src="../script/login.js"></script>
+  </body>
+</html>

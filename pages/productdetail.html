@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Product Details | Smart Local Marketplace</title>
+
+    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="stylesheet" href="../style/productdetail.css" />
+  </head>
+
+  <body>
+    <div id="header"></div>
+
+    <main>
+      <section class="product-detail-page">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href="../index.html"> Home </a>
+
+            <span>›</span>
+
+            <a href="product.html"> Products </a>
+
+            <span>›</span>
+
+            <span id="breadcrumb-name"> Product Details </span>
+          </div>
+
+          <div id="product-detail">
+            <div class="product-detail-image">
+              <img id="product-image" src="" alt="Product" />
+            </div>
+
+            <div class="product-detail-info">
+              <span id="product-category" class="product-category">
+                Category
+              </span>
+
+              <h1 id="product-name">Product Name</h1>
+
+              <div class="detail-rating">
+                <span id="product-rating"> </span>
+
+                <strong id="rating-number"> 0 </strong>
+              </div>
+
+              <h2 id="product-price">FCFA 0</h2>
+
+              <p id="product-description" class="product-description">
+                Product description.
+              </p>
+
+              <div class="seller-information">
+                <h3>Seller Information</h3>
+
+                <p>
+                  <strong>Seller:</strong>
+
+                  <span id="seller-name"> Seller Name </span>
+                </p>
+
+                <p>
+                  <strong>Location:</strong>
+
+                  <span id="product-location"> Bamenda </span>
+                </p>
+
+                <p>
+                  <strong>Availability:</strong>
+
+                  <span class="available"> In Stock </span>
+                </p>
+              </div>
+
+              <div class="quantity-section">
+                <label for="quantity"> Quantity </label>
+
+                <div class="quantity-control">
+                  <button type="button" id="decrease-quantity">−</button>
+
+                  <input
+                    type="number"
+                    id="quantity"
+                    value="1"
+                    min="1"
+                    max="20"
+                  />
+
+                  <button type="button" id="increase-quantity">+</button>
+                </div>
+              </div>
+
+              <div class="total-section">
+                <span> Total: </span>
+
+                <strong id="product-total"> FCFA 0 </strong>
+              </div>
+
+              <div class="detail-buttons">
+                <button type="button" id="add-to-cart" class="add-to-cart">
+                  🛒 Add to Cart
+                </button>
+
+                <a href="cart.html" class="buy-now"> Buy Now </a>
+              </div>
+
+              <p id="cart-message" class="cart-message"></p>
+            </div>
+          </div>
+
+          <section class="product-description-section">
+            <h2>Product Information</h2>
+
+            <p id="full-description">
+              This product is available from a trusted local seller. Check the
+              seller location before placing your order.
+            </p>
+          </section>
+
+          <section class="related-products">
+            <div class="section-header">
+              <h2>You May Also Like</h2>
+
+              <p>Explore more products from our marketplace.</p>
+            </div>
+
+            <div class="related-grid">
+              <a href="productdetail.html?id=shoes001" class="related-card">
+                <img src="../images/products/shoes.jpg" alt="Fashion Shoes" />
+
+                <h3>Fashion Shoes</h3>
+
+                <p>FCFA 18,000</p>
+              </a>
+
+              <a href="productdetail.html?id=bag001" class="related-card">
+                <img
+                  src="../images/products/handbag.jpg"
+                  alt="Leather Handbag"
+                />
+
+                <h3>Leather Handbag</h3>
+
+                <p>FCFA 20,000</p>
+              </a>
+
+              <a href="productdetail.html?id=speaker001" class="related-card">
+                <img
+                  src="../images/products/speaker.jpg"
+                  alt="Bluetooth Speaker"
+                />
+
+                <h3>Bluetooth Speaker</h3>
+
+                <p>FCFA 35,000</p>
+              </a>
+              <a href="productdetail.html?id=men001" class="related-card">
+                <img
+                  src="../images/products/shoe.jpg"
+                  alt="Bluetooth Speaker"
+                />
+
+                <h3>Men Fashion</h3>
+
+                <p>FCFA 35,000</p>
+              </a>
+              <a href="productdetail.html?id=shoe001" class="related-card">
+                <img
+                  src="../images/products/poultry.jpg"
+                  alt="Bluetooth Speaker"
+                />
+
+                <h3>Chicken</h3>
+
+                <p>FCFA 15,000</p>
+              </a>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../script/productdetail.js"></script>
+    <script src="../script/layout.js"></script>
+  </body>
+</html>

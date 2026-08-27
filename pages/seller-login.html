@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Seller Login | Smart Local Marketplace</title>
+
+    <link rel="stylesheet" href="../style/style.css" />
+    <link rel="stylesheet" href="../style/seller-login.css" />
+  </head>
+
+  <body>
+    <div id="header"></div>
+
+    <main>
+      <section class="seller-registration">
+        <div class="container">
+          <div class="seller-registration-header">
+            <h1>Seller Login</h1>
+
+            <p>Login to your seller account and manage your store.</p>
+          </div>
+
+          <div class="seller-form-container">
+            <form id="seller-login-form">
+              <h2>Welcome Back</h2>
+
+              <div id="login-message" class="registration-message"></div>
+
+              <div class="form-group">
+                <label for="seller-email"> Email Address </label>
+
+                <input
+                  type="email"
+                  id="seller-email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  required
+                />
+
+                <small id="seller-email-error"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="seller-password"> Password </label>
+
+                <input
+                  type="password"
+                  id="seller-password"
+                  name="password"
+                  placeholder="Enter your password"
+                  required
+                />
+
+                <small id="seller-password-error"></small>
+              </div>
+
+              <button type="submit" class="register-seller-btn">Login</button>
+
+              <p class="seller-login">
+                Don't have a seller account?
+
+                <a href="seller-registration.html"> Create an account </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../script/layout.js"></script>
+    <script src="../script/seller-login.js"></script>
+  </body>
+</html>
