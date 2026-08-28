@@ -1,15 +1,19 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    ```
     <title>Admin Login | Smart Local Marketplace</title>
 
     <link rel="stylesheet" href="../style/login.css" />
+    ```
   </head>
 
   <body>
+    ```
     <div class="login-container">
       <div class="login-box">
         <h1>Smart Local Marketplace</h1>
@@ -20,7 +24,7 @@
 
         <form id="login-form">
           <div class="form-group">
-            <label for="email"> Admin Email </label>
+            <label for="email">Admin Email</label>
 
             <input
               type="email"
@@ -31,7 +35,7 @@
           </div>
 
           <div class="form-group">
-            <label for="password"> Admin Password </label>
+            <label for="password">Admin Password</label>
 
             <input
               type="password"
@@ -40,16 +44,21 @@
               required
             />
           </div>
-
-          ,<a href="../pages/admin.html" class="back-home">Login</a>
-
+<a href="../pages/admin.html" class="seller-login">
+          login
+        </a>
           <p id="login-message"></p>
         </form>
+
+        <a href="../pages/seller-login.html" class="seller-login">
+          Login as Seller
+        </a>
 
         <a href="../index.html" class="back-home"> Back to Home </a>
       </div>
     </div>
 
     <script src="../script/login.js"></script>
+    ```
   </body>
 </html>

@@ -10,6 +10,42 @@ body {
     background: #f4f7fb;
 }
 
+.login-button {
+width: 100%;
+padding: 13px;
+border: none;
+border-radius: 6px;
+background: #001f4d;
+color: white;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+margin-bottom: 15px;
+}
+
+.login-button:hover {
+background: #003b7a;
+}
+
+.seller-login {
+display: block;
+width: 100%;
+padding: 13px;
+border: 2px solid #001f4d;
+border-radius: 6px;
+background: white;
+color: #001f4d;
+text-decoration: none;
+font-size: 16px;
+font-weight: bold;
+margin-bottom: 15px;
+}
+
+.seller-login:hover {
+background: #001f4d;
+color: white;
+}
+
 .login-container {
     min-height: 100vh;
     display: flex;
