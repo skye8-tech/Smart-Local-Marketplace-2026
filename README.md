@@ -76,8 +76,8 @@ This project provides a simple, centralized marketplace focused on local product
 
 
 
-Example:  
-`https://skye8-tech.github.io/Smart-Local-Marketplace-2026/`
+
+`https://smart-local-marketplace-2026.vercel.app/`
 
 
 
@@ -91,7 +91,7 @@ No backend or package installation is required for the current prototype.
 ## Project Structure
 
 ```
-Smart-Local-Marketplace/
+Smart-Local-Marketplace-2026/
 ├── index.html
 ├── pages/
 │   ├── products.html
@@ -100,8 +100,10 @@ Smart-Local-Marketplace/
 │   ├── order.html
 │   ├── seller-registration.html
 │   ├── seller-dashboard.html
+form.html
 │   ├── admin.html
 │   └── order-success.html
+
 ├── style/
 │   └── ...
 ├── script/
