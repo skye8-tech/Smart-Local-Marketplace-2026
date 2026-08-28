@@ -1,9 +1,9 @@
 "use strict";
 
 var STORAGE_KEY = "smartLocalMarketplaceSellers";
+var ORDERS_KEY = "smartLocalMarketplaceOrders";
 
 var sidebarLinks = document.querySelectorAll(".sidebar nav a");
-
 var adminSections = document.querySelectorAll(".admin-section");
 
 /* SIDEBAR */
@@ -40,12 +40,20 @@ sidebarLinks.forEach(function (link) {
       selectedSection.style.display = "block";
     }
 
-    if (sectionName === "sellers") {
-      loadSellers();
+    if (sectionName === "dashboard") {
+      loadRecentOrders();
     }
 
     if (sectionName === "products") {
       loadSellerProducts();
+    }
+
+    if (sectionName === "sellers") {
+      loadSellers();
+    }
+
+    if (sectionName === "orders") {
+      loadOrders();
     }
   });
 });
@@ -102,74 +110,61 @@ function loadSellers() {
 
     sellerRequest.className = "seller-request";
 
-    sellerRequest.dataset.id = seller.id;
+    sellerRequest.dataset.id = seller.id || "";
 
     var initials = getInitials(seller.sellerName || seller.businessName);
 
     var statusClass = getStatusClass(seller.status);
 
     sellerRequest.innerHTML = `
+      <div class="seller-info">
 
-            <div class="seller-info">
+        <div class="seller-avatar">
+          ${initials}
+        </div>
 
-                <div class="seller-avatar">
-                    ${initials}
-                </div>
+        <div>
+          <h3>
+            ${escapeHTML(seller.businessName || "Unknown Business")}
+          </h3>
 
-                <div>
+          <p>
+            ${escapeHTML(seller.sellerName || "")}
+            |
+            ${escapeHTML(seller.location || "")}
+          </p>
 
-                    <h3>
-                        ${escapeHTML(seller.businessName)}
-                    </h3>
+          <span class="${statusClass}">
+            ${escapeHTML(seller.status || "Pending")}
+          </span>
+        </div>
 
-                    <p>
-                        ${escapeHTML(seller.sellerName)}
-                        |
-                        ${escapeHTML(seller.location)}
-                    </p>
+      </div>
 
-                    <span class="${statusClass}">
-                        ${escapeHTML(seller.status)}
-                    </span>
+      <div class="seller-actions">
 
-                </div>
+        <button
+          class="view-btn"
+          type="button">
+          View
+        </button>
 
-            </div>
+        <button
+          class="approve-btn"
+          type="button"
+          ${seller.status === "Verified" ? "disabled" : ""}>
+          ${seller.status === "Verified" ? "Approved" : "Approve"}
+        </button>
 
+        <button
+          class="reject-btn"
+          type="button"
+          ${seller.status === "Rejected" ? "disabled" : ""}>
+          ${seller.status === "Rejected" ? "Rejected" : "Reject"}
+        </button>
 
-            <div class="seller-actions">
-
-                <button
-                    class="view-btn"
-                    type="button">
-
-                    View
-
-                </button>
-
-
-                <button
-                    class="approve-btn"
-                    type="button"
-                    ${seller.status === "Verified" ? "disabled" : ""}>
-
-                    ${seller.status === "Verified" ? "Approved" : "Approve"}
-
-                </button>
-
-
-                <button
-                    class="reject-btn"
-                    type="button"
-                    ${seller.status === "Rejected" ? "disabled" : ""}>
-
-                    ${seller.status === "Rejected" ? "Rejected" : "Reject"}
-
-                </button>
-
-            </div>
-
-        `;
+      </div>
+    `;
 
     sellerList.appendChild(sellerRequest);
   });
@@ -195,7 +190,7 @@ function attachSellerButtons() {
       var sellers = getSellers();
 
       var seller = sellers.find(function (item) {
-        return item.id === sellerId;
+        return String(item.id) === String(sellerId);
       });
 
       if (!seller) {
@@ -233,7 +228,7 @@ function attachSellerButtons() {
       var sellers = getSellers();
 
       var seller = sellers.find(function (item) {
-        return item.id === sellerId;
+        return String(item.id) === String(sellerId);
       });
 
       if (!seller) {
@@ -249,11 +244,9 @@ function attachSellerButtons() {
       }
 
       seller.status = "Verified";
-
       seller.verified = true;
 
       saveSellers(sellers);
-
       loadSellers();
 
       alert(seller.businessName + " has been verified successfully.");
@@ -269,7 +262,7 @@ function attachSellerButtons() {
       var sellers = getSellers();
 
       var seller = sellers.find(function (item) {
-        return item.id === sellerId;
+        return String(item.id) === String(sellerId);
       });
 
       if (!seller) {
@@ -285,15 +278,121 @@ function attachSellerButtons() {
       }
 
       seller.status = "Rejected";
-
       seller.verified = false;
 
       saveSellers(sellers);
-
       loadSellers();
 
       alert(seller.businessName + " has been rejected.");
     });
+  });
+}
+
+/* ADD PRODUCT FORM */
+
+var addProductButton = document.querySelector(".add-product-btn");
+
+var addProductForm = document.getElementById("add-product-form");
+
+var cancelProductButton = document.getElementById("cancel-product");
+
+if (addProductButton && addProductForm) {
+  addProductButton.addEventListener("click", function () {
+    addProductForm.style.display = "block";
+  });
+}
+
+if (cancelProductButton && addProductForm) {
+  cancelProductButton.addEventListener("click", function () {
+    addProductForm.style.display = "none";
+  });
+}
+
+/* SAVE PRODUCT */
+
+var saveProductButton = document.getElementById("save-product");
+
+if (saveProductButton) {
+  saveProductButton.addEventListener("click", function () {
+    var productName = document.getElementById("product-name").value.trim();
+
+    var sellerName = document.getElementById("product-seller").value;
+
+    var category = document.getElementById("product-category").value;
+
+    var location = document.getElementById("product-location").value;
+
+    var price = document.getElementById("product-price").value;
+
+    var status = document.getElementById("product-status").value;
+
+    if (!productName || !sellerName || !category || !location || !price) {
+      alert("Please fill in all product fields.");
+
+      return;
+    }
+
+    var sellers = getSellers();
+
+    var seller = sellers.find(function (item) {
+      return item.businessName === sellerName;
+    });
+
+    if (!seller) {
+      alert("The selected seller was not found.");
+
+      return;
+    }
+
+    if (!Array.isArray(seller.products)) {
+      seller.products = [];
+    }
+
+    var newProduct = {
+      id: "PROD-" + Date.now(),
+
+      name: productName,
+
+      businessName: seller.businessName,
+
+      seller: seller.businessName,
+
+      category: category,
+
+      location: location,
+
+      price: Number(price),
+
+      status: status,
+
+      stock: 0,
+
+      description: "",
+
+      image: "",
+    };
+
+    seller.products.push(newProduct);
+
+    saveSellers(sellers);
+
+    alert(productName + " has been added successfully.");
+
+    document.getElementById("product-name").value = "";
+
+    document.getElementById("product-seller").value = "";
+
+    document.getElementById("product-category").value = "";
+
+    document.getElementById("product-location").value = "";
+
+    document.getElementById("product-price").value = "";
+
+    document.getElementById("product-status").value = "Active";
+
+    addProductForm.style.display = "none";
+
+    loadSellerProducts();
   });
 }
 
@@ -320,7 +419,17 @@ function loadSellerProducts() {
     }
 
     seller.products.forEach(function (product) {
-      allProducts.push(product);
+      var productCopy = Object.assign({}, product);
+
+      if (!productCopy.businessName) {
+        productCopy.businessName = seller.businessName;
+      }
+
+      if (!productCopy.seller) {
+        productCopy.seller = seller.businessName;
+      }
+
+      allProducts.push(productCopy);
     });
   });
 
@@ -343,7 +452,7 @@ function loadSellerProducts() {
 
     row.dataset.product = product.name || "";
 
-    row.dataset.seller = product.businessName || "";
+    row.dataset.seller = product.businessName || product.seller || "";
 
     row.dataset.category = product.category || "";
 
@@ -354,90 +463,60 @@ function loadSellerProducts() {
     var statusClass = getProductStatusClass(product.status);
 
     row.innerHTML = `
+        <td>
+          ${escapeHTML(product.name || "Unnamed Product")}
+        </td>
 
-                <td>
+        <td>
+          ${escapeHTML(product.businessName || product.seller || "N/A")}
+        </td>
 
-                    ${escapeHTML(product.name)}
+        <td>
+          ${escapeHTML(product.category || "N/A")}
+        </td>
 
-                </td>
+        <td>
+          ${escapeHTML(product.location || "N/A")}
+        </td>
 
+        <td>
+          ${Number(product.price || 0).toLocaleString()}
+          FCFA
+        </td>
 
-                <td>
+        <td>
+          <span class="status ${statusClass}">
+            ${escapeHTML(product.status || "Pending")}
+          </span>
+        </td>
 
-                    ${escapeHTML(product.businessName)}
+        <td>
 
-                </td>
+          <button
+            type="button"
+            class="view-product"
+            data-id="${escapeHTML(product.id || "")}">
+            View
+          </button>
 
+          <button
+            type="button"
+            class="approve-product"
+            data-id="${escapeHTML(product.id || "")}"
+            ${product.status === "Approved" ? "disabled" : ""}>
+            ${product.status === "Approved" ? "Approved" : "Approve"}
+          </button>
 
-                <td>
+          <button
+            type="button"
+            class="reject-product"
+            data-id="${escapeHTML(product.id || "")}"
+            ${product.status === "Rejected" ? "disabled" : ""}>
+            ${product.status === "Rejected" ? "Rejected" : "Reject"}
+          </button>
 
-                    ${escapeHTML(product.category)}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHTML(product.location)}
-
-                </td>
-
-
-                <td>
-
-                    ${Number(product.price || 0).toLocaleString()}
-                    FCFA
-
-                </td>
-
-
-                <td>
-
-                    <span class="status ${statusClass}">
-
-                        ${escapeHTML(product.status || "Pending")}
-
-                    </span>
-
-                </td>
-
-
-                <td>
-
-                    <button
-                        type="button"
-                        class="view-product"
-                        data-id="${escapeHTML(product.id || "")}">
-
-                        View
-
-                    </button>
-
-                    <button
-                        type="button"
-                        class="approve-product"
-                        data-id="${escapeHTML(product.id || "")}"
-                        ${product.status === "Approved" ? "disabled" : ""}>
-
-                        ${
-                          product.status === "Approved" ? "Approved" : "Approve"
-                        }
-
-                    </button>
-
-                    <button
-                        type="button"
-                        class="reject-product"
-                        data-id="${escapeHTML(product.id || "")}"
-                        ${product.status === "Rejected" ? "disabled" : ""}>
-
-                        ${product.status === "Rejected" ? "Rejected" : "Reject"}
-
-                    </button>
-
-                </td>
-
-            `;
+        </td>
+      `;
 
     productList.appendChild(row);
   });
@@ -503,7 +582,6 @@ function filterProducts() {
       matchesStatus
     ) {
       row.style.display = "";
-
       visibleProducts++;
     } else {
       row.style.display = "none";
@@ -514,6 +592,8 @@ function filterProducts() {
     noProducts.style.display = visibleProducts === 0 ? "block" : "none";
   }
 }
+
+/* PRODUCT FILTER EVENTS */
 
 var searchInput = document.getElementById("product-search");
 
@@ -548,58 +628,59 @@ if (statusFilter) {
 /* VIEW PRODUCT */
 
 document.addEventListener("click", function (event) {
-  if (event.target.matches(".view-product")) {
-    var productId = event.target.dataset.id;
+  if (!event.target.matches(".view-product")) {
+    return;
+  }
 
-    var sellers = getSellers();
+  var productId = event.target.dataset.id;
 
-    var foundProduct = null;
+  var sellers = getSellers();
 
-    sellers.some(function (seller) {
-      if (!Array.isArray(seller.products)) {
-        return false;
-      }
+  var foundProduct = null;
 
-      var product = seller.products.find(function (item) {
-        return item.id === productId;
-      });
-
-      if (product) {
-        foundProduct = product;
-
-        return true;
-      }
-
+  sellers.some(function (seller) {
+    if (!Array.isArray(seller.products)) {
       return false;
-    });
-
-    if (!foundProduct) {
-      alert("Product not found.");
-
-      return;
     }
 
-    alert(
-      "Product Information\n\n" +
-        "Product: " +
-        foundProduct.name +
-        "\nSeller: " +
-        foundProduct.businessName +
-        "\nCategory: " +
-        foundProduct.category +
-        "\nPrice: " +
-        Number(foundProduct.price).toLocaleString() +
-        " FCFA" +
-        "\nStock: " +
-        foundProduct.stock +
-        "\nLocation: " +
-        foundProduct.location +
-        "\nDescription: " +
-        foundProduct.description +
-        "\nStatus: " +
-        foundProduct.status,
-    );
+    var product = seller.products.find(function (item) {
+      return String(item.id) === String(productId);
+    });
+
+    if (product) {
+      foundProduct = product;
+      return true;
+    }
+
+    return false;
+  });
+
+  if (!foundProduct) {
+    alert("Product not found.");
+
+    return;
   }
+
+  alert(
+    "Product Information\n\n" +
+      "Product: " +
+      (foundProduct.name || "") +
+      "\nSeller: " +
+      (foundProduct.businessName || foundProduct.seller || "") +
+      "\nCategory: " +
+      (foundProduct.category || "") +
+      "\nPrice: " +
+      Number(foundProduct.price || 0).toLocaleString() +
+      " FCFA" +
+      "\nStock: " +
+      (foundProduct.stock || 0) +
+      "\nLocation: " +
+      (foundProduct.location || "") +
+      "\nDescription: " +
+      (foundProduct.description || "") +
+      "\nStatus: " +
+      (foundProduct.status || ""),
+  );
 });
 
 /* APPROVE PRODUCT */
@@ -621,12 +702,11 @@ document.addEventListener("click", function (event) {
     }
 
     var product = seller.products.find(function (item) {
-      return item.id === productId;
+      return String(item.id) === String(productId);
     });
 
     if (product) {
       foundProduct = product;
-
       return true;
     }
 
@@ -671,12 +751,11 @@ document.addEventListener("click", function (event) {
     }
 
     var product = seller.products.find(function (item) {
-      return item.id === productId;
+      return String(item.id) === String(productId);
     });
 
     if (product) {
       foundProduct = product;
-
       return true;
     }
 
@@ -732,7 +811,329 @@ if (resetButton) {
   });
 }
 
-/* HELPER FUNCTIONS */
+/* ORDERS */
+
+function getOrders() {
+  var data = localStorage.getItem(ORDERS_KEY);
+
+  if (!data) {
+    return [];
+  }
+
+  try {
+    var orders = JSON.parse(data);
+
+    return Array.isArray(orders) ? orders : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveOrders(orders) {
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
+
+function getOrderProducts(order) {
+  if (Array.isArray(order.products)) {
+    return order.products;
+  }
+
+  if (order.productName) {
+    return [
+      {
+        name: order.productName,
+        quantity: order.quantity || 1,
+        businessName: order.businessName || order.seller || "",
+      },
+    ];
+  }
+
+  return [];
+}
+
+function getOrderProductNames(order) {
+  var products = getOrderProducts(order);
+
+  if (products.length === 0) {
+    return "N/A";
+  }
+
+  return products
+    .map(function (product) {
+      return (product.name || "Product") + " × " + (product.quantity || 1);
+    })
+    .join(", ");
+}
+
+function getOrderSellers(order) {
+  var products = getOrderProducts(order);
+
+  var sellers = [];
+
+  products.forEach(function (product) {
+    var seller = product.businessName || product.seller || "";
+
+    if (seller && sellers.indexOf(seller) === -1) {
+      sellers.push(seller);
+    }
+  });
+
+  if (sellers.length === 0 && order.businessName) {
+    sellers.push(order.businessName);
+  }
+
+  if (sellers.length === 0 && order.seller) {
+    sellers.push(order.seller);
+  }
+
+  return sellers.length > 0 ? sellers.join(", ") : "N/A";
+}
+
+function loadOrders() {
+  var orderList = document.getElementById("order-list");
+
+  var noOrders = document.getElementById("no-orders");
+
+  if (!orderList) {
+    return;
+  }
+
+  orderList.innerHTML = "";
+
+  var orders = getOrders();
+
+  var orderCount = document.getElementById("order-count");
+
+  if (orderCount) {
+    orderCount.textContent = orders.length;
+  }
+
+  if (orders.length === 0) {
+    if (noOrders) {
+      noOrders.style.display = "block";
+    }
+
+    return;
+  }
+
+  if (noOrders) {
+    noOrders.style.display = "none";
+  }
+
+  orders
+    .slice()
+    .reverse()
+    .forEach(function (order) {
+      var row = document.createElement("tr");
+
+      var status = order.status || "Pending";
+
+      var statusClass = getOrderStatusClass(status);
+
+      row.dataset.id = order.id || "";
+
+      row.innerHTML = `
+        <td>
+          #${escapeHTML(order.id || "N/A")}
+        </td>
+
+        <td>
+          ${escapeHTML(order.customerName || order.name || "N/A")}
+        </td>
+
+        <td>
+          ${escapeHTML(getOrderSellers(order))}
+        </td>
+
+        <td>
+          ${escapeHTML(getOrderProductNames(order))}
+        </td>
+
+        <td>
+          ${Number(order.total || order.amount || 0).toLocaleString()}
+          FCFA
+        </td>
+
+        <td>
+          <span class="status ${statusClass}">
+            ${escapeHTML(status)}
+          </span>
+        </td>
+
+        <td>
+          <button
+            type="button"
+            class="view-order"
+            data-id="${escapeHTML(order.id || "")}">
+            View
+          </button>
+        </td>
+      `;
+
+      orderList.appendChild(row);
+    });
+}
+
+/* RECENT ORDERS */
+
+function loadRecentOrders() {
+  var recentOrderList = document.getElementById("recent-order-list");
+
+  var noRecentOrders = document.getElementById("no-recent-orders");
+
+  var orderCount = document.getElementById("order-count");
+
+  var orders = getOrders();
+
+  if (orderCount) {
+    orderCount.textContent = orders.length;
+  }
+
+  if (!recentOrderList) {
+    return;
+  }
+
+  recentOrderList.innerHTML = "";
+
+  if (orders.length === 0) {
+    if (noRecentOrders) {
+      noRecentOrders.style.display = "block";
+    }
+
+    return;
+  }
+
+  if (noRecentOrders) {
+    noRecentOrders.style.display = "none";
+  }
+
+  var recentOrders = orders.slice().reverse().slice(0, 5);
+
+  recentOrders.forEach(function (order) {
+    var row = document.createElement("tr");
+
+    var status = order.status || "Pending";
+
+    var statusClass = getOrderStatusClass(status);
+
+    row.innerHTML = `
+        <td>
+          #${escapeHTML(order.id || "N/A")}
+        </td>
+
+        <td>
+          ${escapeHTML(order.customerName || order.name || "N/A")}
+        </td>
+
+        <td>
+          ${escapeHTML(getOrderSellers(order))}
+        </td>
+
+        <td>
+          ${escapeHTML(getOrderProductNames(order))}
+        </td>
+
+        <td>
+          ${Number(order.total || order.amount || 0).toLocaleString()}
+          FCFA
+        </td>
+
+        <td>
+          <span class="status ${statusClass}">
+            ${escapeHTML(status)}
+          </span>
+        </td>
+
+        <td>
+          <button
+            type="button"
+            class="view-order"
+            data-id="${escapeHTML(order.id || "")}">
+            View
+          </button>
+        </td>
+      `;
+
+    recentOrderList.appendChild(row);
+  });
+}
+
+/* VIEW ORDER */
+
+document.addEventListener("click", function (event) {
+  if (!event.target.matches(".view-order")) {
+    return;
+  }
+
+  var orderId = event.target.dataset.id;
+
+  var orders = getOrders();
+
+  var order = orders.find(function (item) {
+    return String(item.id) === String(orderId);
+  });
+
+  if (!order) {
+    alert("Order not found.");
+
+    return;
+  }
+
+  var products = getOrderProducts(order);
+
+  var productText = products
+    .map(function (product) {
+      return (product.name || "Product") + " × " + (product.quantity || 1);
+    })
+    .join("\n");
+
+  alert(
+    "Order Information\n\n" +
+      "Order ID: #" +
+      (order.id || "") +
+      "\nCustomer: " +
+      (order.customerName || order.name || "") +
+      "\nPhone: " +
+      (order.phone || "") +
+      "\nEmail: " +
+      (order.email || "") +
+      "\nLocation: " +
+      (order.location || "") +
+      "\nAddress: " +
+      (order.address || "") +
+      "\nSeller: " +
+      getOrderSellers(order) +
+      "\n\nProducts:\n" +
+      (productText || "No products") +
+      "\n\nTotal: " +
+      Number(order.total || order.amount || 0).toLocaleString() +
+      " FCFA" +
+      "\nStatus: " +
+      (order.status || "Pending") +
+      "\nDate: " +
+      (order.date || ""),
+  );
+});
+
+/* ORDER STATUS */
+
+function getOrderStatusClass(status) {
+  if (status === "Delivered") {
+    return "delivered";
+  }
+
+  if (status === "Rejected") {
+    return "rejected";
+  }
+
+  if (status === "Processing") {
+    return "processing";
+  }
+
+  return "pending";
+}
+
+/* HELPERS */
 
 function getInitials(name) {
   if (!name) {
@@ -775,7 +1176,7 @@ function getProductStatusClass(status) {
 function escapeHTML(value) {
   var div = document.createElement("div");
 
-  div.textContent = value || "";
+  div.textContent = value === undefined || value === null ? "" : String(value);
 
   return div.innerHTML;
 }
@@ -788,6 +1189,11 @@ adminSections.forEach(function (section) {
   }
 });
 
-loadSellers();
+if (addProductForm) {
+  addProductForm.style.display = "none";
+}
 
+loadSellers();
 loadSellerProducts();
+loadOrders();
+loadRecentOrders();

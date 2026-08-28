@@ -67,7 +67,7 @@
 
             <div class="stat-card">
               <h3>Total Orders</h3>
-              <h2>20</h2>
+              <h2 id="order-count">0</h2>
               <p>Orders placed by customers</p>
             </div>
           </section>
@@ -97,7 +97,7 @@
             <div class="section-header">
               <h2>Recent Marketplace Orders</h2>
 
-              <a href="#">View All Orders</a>
+              <a href="#" data-section="orders">View All Orders</a>
             </div>
 
             <div class="table-container">
@@ -114,50 +114,12 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr>
-                    <td>#SLM1001</td>
-                    <td>Glory Anyah</td>
-                    <td>Tech Hub</td>
-                    <td>Laptop</td>
-                    <td>350,000 FCFA</td>
-                    <td>
-                      <span class="status processing"> Processing </span>
-                    </td>
-                    <td>
-                      <button>View</button>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>#SLM1002</td>
-                    <td>John Doe</td>
-                    <td>Fashion Store</td>
-                    <td>Dress</td>
-                    <td>75,000 FCFA</td>
-                    <td>
-                      <span class="status delivered"> Delivered </span>
-                    </td>
-                    <td>
-                      <button>View</button>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>#SLM1003</td>
-                    <td>Mary Smith</td>
-                    <td>Fresh Farm</td>
-                    <td>Vegetables</td>
-                    <td>15,000 FCFA</td>
-                    <td>
-                      <span class="status pending"> Pending </span>
-                    </td>
-                    <td>
-                      <button>View</button>
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody id="recent-order-list"></tbody>
               </table>
+
+              <p id="no-recent-orders" style="display: none">
+                No recent orders found.
+              </p>
             </div>
           </section>
         </section>
@@ -219,7 +181,6 @@
 
             <div class="form-buttons">
               <button type="button" id="save-product">Save Product</button>
-
               <button type="button" id="cancel-product">Cancel</button>
             </div>
           </div>
@@ -296,7 +257,7 @@
                   <td>Bamenda</td>
                   <td>75,000 FCFA</td>
                   <td>
-                    <span class="status delivered"> Active </span>
+                    <span class="status delivered">Active</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -316,7 +277,7 @@
                   <td>Buea</td>
                   <td>350,000 FCFA</td>
                   <td>
-                    <span class="status delivered"> Active </span>
+                    <span class="status delivered">Active</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -336,7 +297,7 @@
                   <td>Bamenda</td>
                   <td>2,000 FCFA</td>
                   <td>
-                    <span class="status pending"> Pending </span>
+                    <span class="status pending">Pending</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -356,7 +317,7 @@
                   <td>Douala</td>
                   <td>35,000 FCFA</td>
                   <td>
-                    <span class="status delivered"> Active </span>
+                    <span class="status delivered">Active</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -376,7 +337,7 @@
                   <td>Yaounde</td>
                   <td>12,000 FCFA</td>
                   <td>
-                    <span class="status rejected"> Rejected </span>
+                    <span class="status rejected">Rejected</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -411,9 +372,7 @@
 
               <div class="seller-actions">
                 <button class="view-btn">View</button>
-
                 <button class="approve-btn">Approve</button>
-
                 <button class="reject-btn">Reject</button>
               </div>
             </div>
@@ -431,9 +390,7 @@
 
               <div class="seller-actions">
                 <button class="view-btn">View</button>
-
                 <button class="approve-btn">Approve</button>
-
                 <button class="reject-btn">Reject</button>
               </div>
             </div>
@@ -472,7 +429,7 @@
                   <td>Bamenda</td>
                   <td>12</td>
                   <td>
-                    <span class="status delivered"> Active </span>
+                    <span class="status delivered">Active</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -485,7 +442,7 @@
                   <td>Buea</td>
                   <td>8</td>
                   <td>
-                    <span class="status delivered"> Active </span>
+                    <span class="status delivered">Active</span>
                   </td>
                   <td>
                     <button>View</button>
@@ -518,36 +475,10 @@
                 </tr>
               </thead>
 
-              <tbody>
-                <tr>
-                  <td>#SLM1001</td>
-                  <td>Glory Anyah</td>
-                  <td>Tech Hub</td>
-                  <td>Laptop</td>
-                  <td>350,000 FCFA</td>
-                  <td>
-                    <span class="status processing"> Processing </span>
-                  </td>
-                  <td>
-                    <button>View</button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#SLM1002</td>
-                  <td>John Doe</td>
-                  <td>Fashion Store</td>
-                  <td>Dress</td>
-                  <td>75,000 FCFA</td>
-                  <td>
-                    <span class="status delivered"> Delivered </span>
-                  </td>
-                  <td>
-                    <button>View</button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="order-list"></tbody>
             </table>
+
+            <p id="no-orders" style="display: none">No orders found.</p>
           </div>
         </section>
 
