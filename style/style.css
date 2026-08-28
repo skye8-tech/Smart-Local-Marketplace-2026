@@ -76,6 +76,55 @@ body {
   justify-content: space-between;
   gap: 25px;
 }
+.menu-toggle {
+display: none;
+}
+
+@media (max-width: 768px) {
+
+```
+.menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+    z-index: 1001;
+}
+
+.nav {
+    display: none;
+}
+
+.nav.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #001f4d;
+    padding: 20px 0;
+    z-index: 1000;
+}
+
+.nav.active a {
+    display: block;
+    width: 100%;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.nav.active a:hover {
+    background: #003b7a;
+}
+```
+
+}
+
 
 .logo {
   color:green;
