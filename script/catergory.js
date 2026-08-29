@@ -319,10 +319,7 @@ function showSubcategories(category) {
             "subcategory-card";
 
 
-        /*
-         * Send the buyer to product.html
-         * with both category and subcategory.
-         */
+       
         subcategoryCard.href =
             "product.html?category=" +
             encodeURIComponent(category) +

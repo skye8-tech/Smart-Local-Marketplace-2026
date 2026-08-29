@@ -811,7 +811,7 @@ if (resetButton) {
   });
 }
 
-/* ORDERS */
+
 
 function getOrders() {
   var data = localStorage.getItem(ORDERS_KEY);
@@ -974,7 +974,7 @@ function loadOrders() {
     });
 }
 
-/* RECENT ORDERS */
+
 
 function loadRecentOrders() {
   var recentOrderList = document.getElementById("recent-order-list");
@@ -1058,7 +1058,7 @@ function loadRecentOrders() {
   });
 }
 
-/* VIEW ORDER */
+
 
 document.addEventListener("click", function (event) {
   if (!event.target.matches(".view-order")) {
@@ -1115,7 +1115,7 @@ document.addEventListener("click", function (event) {
   );
 });
 
-/* ORDER STATUS */
+
 
 function getOrderStatusClass(status) {
   if (status === "Delivered") {
@@ -1133,7 +1133,6 @@ function getOrderStatusClass(status) {
   return "pending";
 }
 
-/* HELPERS */
 
 function getInitials(name) {
   if (!name) {

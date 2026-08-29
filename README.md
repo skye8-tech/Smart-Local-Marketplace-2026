@@ -77,8 +77,9 @@ This project provides a simple, centralized marketplace focused on local product
 
 
 
-`https://smart-local-marketplace-2026.vercel.app/`
+(https://smart-local-marketplace.netlify.app/)
 
+github URL https://github.com/skye8-tech/smart-local-markrtplace.git
 
 
 3. Open `index.html` in your browser  
